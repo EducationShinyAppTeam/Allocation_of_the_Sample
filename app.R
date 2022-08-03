@@ -93,7 +93,6 @@ ui <- list(
         menuItem("Overview", tabName = "overview", icon = icon("tachometer-alt")),
         menuItem("Prerequisites", tabName = "prerequisites", icon = icon("book")),
         menuItem("Explore", tabName = "explore", icon = icon("wpexplorer")),
-        menuItem("Game", tabName = "game", icon = icon("gamepad")),
         menuItem("References", tabName = "references", icon = icon("leanpub"))
       ),
       tags$div(
@@ -114,9 +113,7 @@ ui <- list(
           tags$ol(
             tags$li("Click the go button to enter the prerequisites page."),
             tags$li("In the explore section, view and compare the concept of each 
-                    allocation type"),
-            tags$li("Test yourself on which type of allocation to apply to different situations in
-                    the hangman game format.")
+                    allocation type")
           ),
           ##### Go Button
           div(style = "text-align: center;",
@@ -579,15 +576,6 @@ ui <- list(
     }
   )
 
-  observeEvent(input$info,{
-    sendSweetAlert(
-      session = session,
-      title = "Instructions:",
-      text = "Learn the concept of each allocation type. Also, 
-      test yourself with the multiple choice games.",
-      type = "info"
-    )
-  })
   
   ### Error message----
   observeEvent(
@@ -883,7 +871,6 @@ ui <- list(
     expr = {
       ggplot(
         data = data.frame(
-          # x = seq(from = input$budgetRange[1], to = input$budgetRange[2], by = 100)
           x = seq(from = 500, to = input$targetBudget, by = 100)
         ),
         mapping = aes(x = x)
@@ -924,8 +911,10 @@ ui <- list(
           size = 1.2,
           mapping = aes(color = "group3", linetype = "group3")
         ) +
+        abline(v = input$targetBudget)+
         scale_x_continuous(
-          expand = c(0, 0)
+          limits = c(500, 1500),
+          expand = expansion(mult = 0, add = 100)
         ) +
         scale_y_continuous(
           limits = c(0, 125),

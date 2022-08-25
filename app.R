@@ -637,16 +637,32 @@ ui <- list(
     }
   )
     
-  observeEvent(
-      eventExpr = c(input$N1, input$N2, input$r1, input$r2, input$budgetc1, 
-                    input$budgetc2,input$budgetc3, input$targetBudget),
+    observeEvent(
+      eventExpr = c(input$N1, input$N2, input$r1, input$r2,
+                    input$budgetc1, input$budgetc2, input$budgetc3,
+                    input$targetBudget),
       handlerExpr = {
+        sampleSizes <- budgetCalc(
+          Budget = input$targetBudget,
+          N = 600,
+          sizes = c(input$N1, input$N2), 
+          fixedStdDev, 
+          sigRatios = c(input$r1, input$r2, 1), 
+          costs = c(input$budgetc1, input$budgetc2,input$budgetc3),
+          target = 1:3
+        )
+        totalSampleSize <- sum(round(sampleSizes))
+        errorBound <- errorBoundCalc(
+          sampleSizes = sampleSizes,
+          variances = (fixedStdDev * c(input$r1, input$r2, 1))^2
+        )
         output$BoundederrorSummary <- renderUI({
-          paste0("When the costs of obtaining a single observation from the 
-                  stratum equals to ", input$budgetc1,", " ,input$budgetc2,", and ",
-                 input$budgetc3, ", the total budget of ", input$targetBudget, 
-                 " will give the total sample size
-                 of ... at ... error bound" )
+          paste0("When the costs of obtaining a single observation are $",
+                 input$budgetc1, " for Stratum 1, $", input$budgetc2, " for Stratum 
+             2, and $", input$budgetc3, " for Stratum 3, and we have a total
+             budget of $", input$targetBudget, ", then we can have a total sample
+             size of ", totalSampleSize, " with an error bound of ", errorBound,
+             ".")
         })
       }
     )

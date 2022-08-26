@@ -13,7 +13,8 @@ library(ggplot2)
 
 
 # Global Constants ----
-SimpleCal <- function(B, N = 600, sizes, sigma, sigRatios, allocations, target){
+fixedStdDev <- 5
+SimpleCal <- function(B,sigma, N = 600, sizes, sigRatios, allocations, target){
   sizes <- c(sizes, N-sum(sizes))
   sigmas <- sigma * sigRatios
   allocations <- c(allocations, 1-sum(allocations))
@@ -23,7 +24,7 @@ SimpleCal <- function(B, N = 600, sizes, sigma, sigRatios, allocations, target){
   nTarget <- target*n 
   return(nTarget)
 }
-CostbasedCal <- function(B, N = 600, sizes, sigma, sigRatios, costs, target){
+CostbasedCal <- function(B,sigma, N = 600, sizes, sigRatios, costs, target){
   sizes <- c(sizes, N-sum(sizes))
   sigmas <- sigma * sigRatios
   numerator <- (sum(sizes * sigmas / sqrt(costs))) * (sum(sizes * sigmas * sqrt(costs)))
@@ -32,7 +33,7 @@ CostbasedCal <- function(B, N = 600, sizes, sigma, sigRatios, costs, target){
   nTarget <- n * (sizes[target]*sigmas[target]/sqrt(costs[target]))/sum(sizes * sigmas / sqrt(costs))
   return(nTarget)
 }
-NeymanCal <- function(B, N = 600, sizes, sigma, sigRatios, target){
+NeymanCal <- function(B,sigma, N = 600, sizes, sigRatios, target){
   sizes <- c(sizes, N - sum(sizes))
   sigmas <- sigma * sigRatios
   numerator <- (sum(sizes * sigmas))^2
@@ -41,7 +42,7 @@ NeymanCal <- function(B, N = 600, sizes, sigma, sigRatios, target){
   nTarget <- n * (sizes[target]*sigmas[target])/sum(sizes * sigmas)
   return(nTarget)
 }
-BudgetCal <- function(Budget, N = 600, sizes, sigma, sigRatios, costs, target){
+budgetCalc <- function(Budget,sigma, N = 600, sizes, sigRatios, costs, target){
   sizes <- c(sizes, N - sum(sizes))
   sigmas <- sigma * sigRatios
   numerators <- sizes * sigmas / sqrt(costs)
@@ -51,14 +52,9 @@ BudgetCal <- function(Budget, N = 600, sizes, sigma, sigRatios, costs, target){
   nTarget <- n * allocations[target]
   return(nTarget)
 }
-BudgetCal2 <- function(Budget, N = 600, sizes, sigma, sigRatios, costs, target){
-  sizes <- c(sizes, N - sum(sizes))
-  sigmas <- sigma * sigRatios
-  numerators <- sizes * sigmas / sqrt(costs)
-  denominator <- sum(sizes * sigmas / sqrt(costs))
-  allocations <- numerators/ denominator
-  n <- Budget / sum(costs * allocations)
-  return(n)
+errorBoundCalc <- function(sampleSizes, variances){
+  varainces <- fixedStdDev^2
+  return(sqrt(sum(variances * sampleSizes) / sum(sampleSizes)))
 }
 
 
@@ -653,7 +649,7 @@ ui <- list(
         )
         totalSampleSize <- sum(round(sampleSizes))
         errorBound <- errorBoundCalc(
-          sampleSizes = sampleSizes,
+          sampleSizes = round(sampleSizes),
           variances = (fixedStdDev * c(input$r1, input$r2, 1))^2
         )
         output$BoundederrorSummary <- renderUI({
@@ -661,7 +657,7 @@ ui <- list(
                  input$budgetc1, " for Stratum 1, $", input$budgetc2, " for Stratum 
              2, and $", input$budgetc3, " for Stratum 3, and we have a total
              budget of $", input$targetBudget, ", then we can have a total sample
-             size of ", totalSampleSize, " with an error bound of ", errorBound,
+             size of ", totalSampleSize, " with an error bound of ",round(errorBound, digits=2),
              ".")
         })
       }
@@ -680,12 +676,11 @@ ui <- list(
           fun = SimpleCal,
           args = list(
             sizes = c(input$N1, input$N2),
-            sigma = 5,
+            sigma = fixedStdDev,
             sigRatios = c(input$r1, input$r2, 1),
             allocations = c(input$a1, input$a2),
             target = input$a1
           ),
-          # xlim = c(1,5),
           size = 1.2,
           mapping = aes(color = "group1", linetype = "group1")
         )  +
@@ -693,12 +688,11 @@ ui <- list(
           fun = SimpleCal,
           args = list(
             sizes = c(input$N1, input$N2),
-            sigma = 5,
+            sigma = fixedStdDev,
             sigRatios = c(input$r1, input$r2, 1),
             allocation = c(input$a1,input$a2),
             target = input$a2
           ),
-          # xlim = c(1,5),
           size = 1.2,
           mapping = aes(color = "group2", linetype = "group2")
         ) +
@@ -706,12 +700,11 @@ ui <- list(
           fun = SimpleCal,
           args = list(
             sizes = c(input$N1, input$N2),
-            sigma = 5,
+            sigma = fixedStdDev,
             sigRatios = c(input$r1, input$r2, 1),
             allocations = c(input$a1,input$a2),
             target = 1-input$a1-input$a2
           ),
-          # xlim = c(1,5),
           size = 1.2,
           mapping = aes(color = "group3", linetype = "group3")
         )+
@@ -755,7 +748,7 @@ ui <- list(
           fun = CostbasedCal,
           args = list(
             sizes = c(input$N1, input$N2),
-            sigma = 5,
+            sigma = fixedStdDev,
             sigRatios = c(input$r1, input$r2, 1),
             costs = c(input$c1, input$c2, input$c3),
             target = 1
@@ -767,7 +760,7 @@ ui <- list(
           fun = CostbasedCal,
           args = list(
             sizes = c(input$N1, input$N2),
-            sigma = 5,
+            sigma = fixedStdDev,
             sigRatios = c(input$r1, input$r2, 1),
             costs = c(input$c1, input$c2, input$c3),
             target = 2
@@ -779,7 +772,7 @@ ui <- list(
           fun = CostbasedCal,
           args = list(
             sizes = c(input$N1, input$N2),
-            sigma = 5,
+            sigma = fixedStdDev,
             sigRatios = c(input$r1, input$r2, 1),
             costs = c(input$c1, input$c2, input$c3),
             target = 3
@@ -827,7 +820,7 @@ ui <- list(
           fun = NeymanCal,
           args = list(
             sizes = c(input$N1, input$N2),
-            sigma = 5,
+            sigma = fixedStdDev,
             sigRatios = c(input$r1, input$r2, 1),
             target = 1
           ),
@@ -838,7 +831,7 @@ ui <- list(
           fun = NeymanCal,
           args = list(
             sizes = c(input$N1, input$N2),
-            sigma = 5,
+            sigma = fixedStdDev,
             sigRatios = c(input$r1, input$r2, 1),
             target = 2
           ),
@@ -849,7 +842,7 @@ ui <- list(
           fun = NeymanCal,
           args = list(
             sizes = c(input$N1, input$N2),
-            sigma = 5,
+            sigma = fixedStdDev,
             sigRatios = c(input$r1, input$r2, 1),
             target = 3
           ),
@@ -892,10 +885,10 @@ ui <- list(
         mapping = aes(x = x)
       )+
         stat_function(
-          fun = BudgetCal,
+          fun = budgetCalc,
           args = list(
             sizes = c(input$N1, input$N2),
-            sigma = 5,
+            sigma = fixedStdDev,
             sigRatios = c(input$r1, input$r2, 1),
             costs = c(input$budgetc1, input$budgetc2, input$budgetc3),
             target = 1
@@ -904,10 +897,10 @@ ui <- list(
           mapping = aes(color = "group1", linetype = "group1")
         )  +
         stat_function(
-          fun = BudgetCal,
+          fun = budgetCalc,
           args = list(
             sizes = c(input$N1, input$N2),
-            sigma = 5,
+            sigma = fixedStdDev,
             sigRatios = c(input$r1, input$r2, 1),
             costs = c(input$budgetc1, input$budgetc2, input$budgetc3),
             target = 2
@@ -916,10 +909,10 @@ ui <- list(
           mapping = aes(color = "group2", linetype = "group2")
         )  +
         stat_function(
-          fun = BudgetCal,
+          fun = budgetCalc,
           args = list(
             sizes = c(input$N1, input$N2),
-            sigma = 5,
+            sigma = fixedStdDev,
             sigRatios = c(input$r1, input$r2, 1),
             costs = c(input$budgetc1, input$budgetc2, input$budgetc3),
             target = 3
@@ -927,7 +920,7 @@ ui <- list(
           size = 1.2,
           mapping = aes(color = "group3", linetype = "group3")
         ) +
-        abline(v = input$targetBudget)+
+        geom_vline(xintercept = input$targetBudget, size=1)+
         scale_x_continuous(
           limits = c(500, 1500),
           expand = expansion(mult = 0, add = 100)

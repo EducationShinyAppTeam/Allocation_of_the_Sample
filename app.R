@@ -75,14 +75,14 @@ ui <- list(
       tags$li(
         class = "dropdown",
         tags$a(href='https://shinyapps.science.psu.edu/',
-               icon("home")))
+               icon("house")))
     ),
     ### Create the sidebar/left navigation menu
     dashboardSidebar(
       width = 250,
       sidebarMenu(
         id = "pages",
-        menuItem("Overview", tabName = "overview", icon = icon("tachometer-alt")),
+        menuItem("Overview", tabName = "overview", icon = icon("gauge-high")),
         menuItem("Prerequisites", tabName = "prerequisites", icon = icon("book")),
         menuItem("Explore", tabName = "explore", icon = icon("wpexplorer")),
         menuItem("References", tabName = "references", icon = icon("leanpub"))
@@ -499,11 +499,6 @@ ui <- list(
                 ),
                 br(),
                 uiOutput("BoundederrorSummary")
-                # column(
-                #   width = 8,
-                #   offset = 0,
-                #   plotOutput("BudgetPlot2")
-                # )
               )
             )
           )
@@ -530,14 +525,6 @@ ui <- list(
             "Chang, W., Cheng, J., Allaire, J., Xie, Y., and McPherson, J.
             (2019). shiny: Web application framework for R. (v1.4.0)
             [R Package]. Available from: https://CRAN.R-project.org/package=shiny"),
-          p(class = "hangingindent",
-            "de Vries, A., Schloerke, B. and Russell, K. (2019).
-            sortable: Drag-and-Drop in 'shiny' Apps with 'SortableJS'. (v0.4.2) [R package]
-            Avaliable from: https://CRAN.R-project.org/package=sortable"),
-          p(class = "hangingindent",
-            "Kassambara, A. (2020). rstatix: Pipe-Friendly Framework for Basic
-            Statistical Tests. (v0.6.0) [R package] Avaliable from:
-            https://CRAN.R-project.org/package=rstatix"),
           p(class = "hangingindent",
             "Perrier, V., Meyer, F. and Granjon, D. (2020). shinyWidgets:
             Custom Inputs Widgets for Shiny. (v0.5.3) [R package]

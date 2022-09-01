@@ -85,6 +85,7 @@ ui <- list(
         menuItem("Overview", tabName = "overview", icon = icon("gauge-high")),
         menuItem("Prerequisites", tabName = "prerequisites", icon = icon("book")),
         menuItem("Explore", tabName = "explore", icon = icon("wpexplorer")),
+        menuItem("Challenge", tabName = "challenge", icon = icon("wpexplorer")),
         menuItem("References", tabName = "references", icon = icon("leanpub"))
       ),
       tags$div(
@@ -95,7 +96,7 @@ ui <- list(
     ### Create the content
     dashboardBody(
       tabItems(
-        #### Set up the Overview Page
+        #### Set up the Overview Page ----
         tabItem(
           tabName = "overview",
           withMathJax(),
@@ -331,7 +332,7 @@ ui <- list(
           uiOutput("initSummary"),
           br(),
           h3("Step 2: Pick a Allocation Type to Explore"),
-          ## Inset Tabs ------------------------------------------------------------
+          ## Inset Tabs 
           tabsetPanel(
             id = "models",
             type = "tabs",
@@ -501,8 +502,22 @@ ui <- list(
             )
           )
         ),
+        ### Set up Challenge page ----
+        tabItem(
+          tabName = "challenge",
+          h2("Challenge"),
+          br(),
+          p("On this page, you will test your understanding on each type of allocation method
+            by answering the following questions."),
+          p("What happens when the bounded error approaches 0?"),
+          p("How does the optimal sample allocation depend on the cost of obtaining an observation? "),
+          p("If the cost of obtaining an observation from one stratum is four times the cost for the other strata, how much bigger should the sample size be?"),
+          p("Suppose the cost of obtaining an observation from one stratum is four times the cost for the other strata. Can you find the within-strata standard deviations that make the optimal allocation the same for all strata?"),
+          p("How does the sample size behave as a function of the budget?"),
+          p("Suppose costs and within-group standard deviations are the same for all strata. Should the sample sizes always be the same?")
+        ),
       
-        #### Set up the References Page-REQUIRED
+        #### Set up the References Page-REQUIRED ----
         tabItem(
           tabName = "references",
           withMathJax(),

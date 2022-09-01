@@ -369,9 +369,7 @@ ui <- list(
                   offset = 0,
                   plotOutput("SimplePlot")
                 )
-                ),
-              h2("Challenge:"),
-              p("What happen when bounded error approaches to 0?")
+                )
               ),
             ##### Cost-based Tab -------------------------------
             tabPanel(
@@ -630,9 +628,9 @@ ui <- list(
           costs = c(input$budgetc1, input$budgetc2,input$budgetc3),
           target = 1:3
         )
-        totalSampleSize <- sum(round(sampleSizes))
+        totalSampleSize <- round(sum(sampleSizes))
         errorBound <- errorBoundCalc(
-          sampleSizes = round(sampleSizes),
+          sampleSizes = sampleSizes,
           variances = (fixedStdDev * c(input$r1, input$r2, 1))^2
         )
         output$BoundederrorSummary <- renderUI({

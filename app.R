@@ -85,7 +85,7 @@ ui <- list(
         menuItem("Overview", tabName = "overview", icon = icon("gauge-high")),
         menuItem("Prerequisites", tabName = "prerequisites", icon = icon("book")),
         menuItem("Explore", tabName = "explore", icon = icon("wpexplorer")),
-        menuItem("Challenge", tabName = "challenge", icon = icon("wpexplorer")),
+        menuItem("Challenge", tabName = "challenge", icon = icon("cogs")),
         menuItem("References", tabName = "references", icon = icon("leanpub"))
       ),
       tags$div(
@@ -246,7 +246,6 @@ ui <- list(
         tabItem(
           tabName = "explore",
           h2("Explore"),
-          br(),
           p("On this page, you will explore how each type of allocation method works.
             Please follow the steps below by using the sliders to adjust the parameters. 
             Then observe the plots of sample size when using a different type of allocation.
@@ -506,15 +505,70 @@ ui <- list(
         tabItem(
           tabName = "challenge",
           h2("Challenge"),
-          br(),
-          p("On this page, you will test your understanding on each type of allocation method
+          p("On this page, you will test your understanding on each type of 
+            allocation method
             by answering the following questions."),
-          p("What happens when the bounded error approaches 0?"),
-          p("How does the optimal sample allocation depend on the cost of obtaining an observation? "),
-          p("If the cost of obtaining an observation from one stratum is four times the cost for the other strata, how much bigger should the sample size be?"),
-          p("Suppose the cost of obtaining an observation from one stratum is four times the cost for the other strata. Can you find the within-strata standard deviations that make the optimal allocation the same for all strata?"),
-          p("How does the sample size behave as a function of the budget?"),
-          p("Suppose costs and within-group standard deviations are the same for all strata. Should the sample sizes always be the same?")
+          br(),
+          box(
+            title = strong("What happens when the bounded error approaches 0?"),
+            status = "primary",
+            collapsible = TRUE,
+            collapsed = TRUE,
+            width = '100%',
+            "Zero error can only happen with a census (i.e. when sample size = 
+            population size)."
+          ),
+          box(
+            title = strong("How does the optimal sample allocation depend on the
+                           cost of obtaining an observation?"),
+            status = "primary",
+            collapsible = TRUE,
+            collapsed = TRUE,
+            width = '100%',
+            "Higher costs result in a smaller allocation going to that group 
+            (essentially proportional to the square root of the cost)."
+          ),
+          box(
+            title = strong("If the cost of obtaining an observation from one 
+                           stratum is four times the cost for the other strata,  
+                            how much bigger should the sample size be?"),
+            status = "primary",
+            collapsible = TRUE,
+            collapsed = TRUE,
+            width = '100%',
+            "Double the size assuming the standard deviations within strata 
+            are all the same."
+          ),
+          box(
+            title = strong("Suppose the cost of obtaining an observation from 
+                           one stratum is four times the cost for the other strata. 
+                           Can you find the within-strata standard deviations 
+                           that make the optimal allocation the same for all strata?"),
+            status = "primary",
+            collapsible = TRUE,
+            collapsed = TRUE,
+            width = '100%',
+            "This type of balance would occur when the standard deviation is 
+            doubled compared to the other groups (because sample allocation goes with the variance). "
+          ),
+          box(
+            title = strong("How does the sample size behave as a function of the budget?"),
+            status = "primary",
+            collapsible = TRUE,
+            collapsed = TRUE,
+            width = '100%',
+            "Sample size will be a linear function of the budget for each stratum. "
+          ),
+          box(
+            title = strong("Suppose costs and within-group standard deviations are 
+                           the same for all strata. Should the sample sizes always be the same?"),
+            status = "primary",
+            collapsible = TRUE,
+            collapsed = TRUE,
+            width = '100%',
+            "No – population sizes can play a role if a small error forces the 
+            use of a large proportion of the population be sampled. "
+          )
         ),
       
         #### Set up the References Page-REQUIRED ----
@@ -643,17 +697,49 @@ ui <- list(
           costs = c(input$budgetc1, input$budgetc2,input$budgetc3),
           target = 1:3
         )
+        sampleSize1 <- budgetCalc(
+          Budget = input$targetBudget,
+          N = 600,
+          sizes = c(input$N1, input$N2), 
+          fixedStdDev, 
+          sigRatios = c(input$r1, input$r2, 1), 
+          costs = c(input$budgetc1, input$budgetc2,input$budgetc3),
+          target = 1
+        )
+        sampleSize2 <- budgetCalc(
+          Budget = input$targetBudget,
+          N = 600,
+          sizes = c(input$N1, input$N2), 
+          fixedStdDev, 
+          sigRatios = c(input$r1, input$r2, 1), 
+          costs = c(input$budgetc1, input$budgetc2,input$budgetc3),
+          target = 2
+        )
+        sampleSize3 <- budgetCalc(
+          Budget = input$targetBudget,
+          N = 600,
+          sizes = c(input$N1, input$N2), 
+          fixedStdDev, 
+          sigRatios = c(input$r1, input$r2, 1), 
+          costs = c(input$budgetc1, input$budgetc2,input$budgetc3),
+          target = 3
+        )
         totalSampleSize <- round(sum(sampleSizes))
         errorBound <- errorBoundCalc(
           sampleSizes = sampleSizes,
           variances = (fixedStdDev * c(input$r1, input$r2, 1))^2
         )
+        
         output$BoundederrorSummary <- renderUI({
           paste0("When the costs of obtaining a single observation are $",
                  input$budgetc1, " for Stratum 1, $", input$budgetc2, " for Stratum 
              2, and $", input$budgetc3, " for Stratum 3, and we have a total
              budget of $", input$targetBudget, ", then we can have a total sample
-             size of ", totalSampleSize, " with an error bound of ",round(errorBound, digits=2),
+             size of ", totalSampleSize, " where the sample size of strata 1 is ",
+             round(sampleSize1),", the sample size of strata 2 is ",
+             round(sampleSize2),
+             " and the sample size of strata 3 is ",
+             round(sampleSize3)," with an error bound of ",round(errorBound, digits=2),
              ".")
         })
       }

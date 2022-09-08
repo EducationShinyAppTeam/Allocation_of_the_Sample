@@ -140,7 +140,7 @@ ui <- list(
             collapsible = TRUE,
             collapsed = TRUE,
             width = '100%',
-            "Recall that in the stratified random sampling when sample size n is chosen, there are many
+            "Recall that in stratified random sampling when sample size n is chosen, there are many
             ways to divide n into the individual stratum sample sizes, n1, n2,..., nL. 
             Allocation is",
             strong("a procedure for dividing a sample among the strata.")
@@ -151,8 +151,8 @@ ui <- list(
             collapsible = TRUE,
             collapsed = TRUE,
             width = '100%',
-            "The main objective of allocation method is to",
-            strong("obtain the speicific amount of information at the minimum cost")
+            "The main objective of the allocation method is to",
+            strong("obtain a specific amount of information at the minimum cost")
           ),
           box(
             title = strong("What are the factors that affect the allocation scheme?"),
@@ -164,7 +164,8 @@ ui <- list(
             tags$ol(
               tags$li(strong("Number of elements"),
                       tags$br(),
-                      "For example, a sample size 20 from a population of 200 elements should contain more information than a sample of 20 from 20,000 elements.",
+                      "For example, a sample size of 20 from a population of 200 elements
+                      should contain more information than a sample of 20 from 20,000 elements.",
                       tags$br(),
                       "Therefore, large sample sizes should
           be assigned to strata containing large numbers of elements."),
@@ -691,9 +692,9 @@ ui <- list(
         sampleSizes <- budgetCalc(
           Budget = input$targetBudget,
           N = 600,
-          sizes = c(input$N1, input$N2), 
-          fixedStdDev, 
-          sigRatios = c(input$r1, input$r2, 1), 
+          sizes = c(input$N1, input$N2),
+          fixedStdDev,
+          sigRatios = c(input$r1, input$r2, 1),
           costs = c(input$budgetc1, input$budgetc2,input$budgetc3),
           target = 1:3
         )
@@ -724,7 +725,7 @@ ui <- list(
           costs = c(input$budgetc1, input$budgetc2,input$budgetc3),
           target = 3
         )
-        totalSampleSize <- round(sum(sampleSizes))
+        totalSampleSize <- sampleSize1+sampleSize2+sampleSize3
         errorBound <- errorBoundCalc(
           sampleSizes = sampleSizes,
           variances = (fixedStdDev * c(input$r1, input$r2, 1))^2
@@ -735,11 +736,11 @@ ui <- list(
                  input$budgetc1, " for Stratum 1, $", input$budgetc2, " for Stratum 
              2, and $", input$budgetc3, " for Stratum 3, and we have a total
              budget of $", input$targetBudget, ", then we can have a total sample
-             size of ", totalSampleSize, " where the sample size of strata 1 is ",
-             round(sampleSize1),", the sample size of strata 2 is ",
+             size of ",floor(totalSampleSize), " where the sample size of strata 1 is ",
+             floor(sampleSize1),", the sample size of strata 2 is ",
              round(sampleSize2),
              " and the sample size of strata 3 is ",
-             round(sampleSize3)," with an error bound of ",round(errorBound, digits=2),
+             ceiling(sampleSize3)," with an error bound of ",round(errorBound, digits=2),
              ".")
         })
       }

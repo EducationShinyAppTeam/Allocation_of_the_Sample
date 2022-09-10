@@ -60,7 +60,7 @@ ui <- list(
     skin = "red",
     ### Create the app header
     dashboardHeader(
-      title = "Allocation of the Sample",
+      title = "Sampling Allocation",
       titleWidth = 250,
       tags$li(
         class = "dropdown",
@@ -100,13 +100,14 @@ ui <- list(
         tabItem(
           tabName = "overview",
           withMathJax(),
-          h1("Allocation of the Sample"),
-          p("This app introduces the concept of different type of allocation"),
+          h1("Sampling Allocation"),
+          p("This app introduces different methods for the sampling allocation problem"),
           h2("Instructions"),
           tags$ol(
             tags$li("Click the go button to enter the prerequisites page."),
-            tags$li("In the explore section, view and compare the concept of each 
-                    allocation type")
+            tags$li("In the explore section, view and compare the different 
+                    allocation methods"),
+            tags$li("The challenge page provides ideas for exploration")
           ),
           ##### Go Button
           div(style = "text-align: center;",
@@ -140,19 +141,21 @@ ui <- list(
             collapsible = TRUE,
             collapsed = TRUE,
             width = '100%',
-            "Recall that in stratified random sampling when sample size n is chosen, there are many
-            ways to divide n into the individual stratum sample sizes, n1, n2,..., nL. 
-            Allocation is",
-            strong("a procedure for dividing a sample among the strata.")
+            "Often a population can be divided into \\(L\\) more homogenous subpopulations
+            called strata. In stratified random sampling with a sample size \\(n\\) 
+            , there are many ways to divide \\(n\\) into the individual stratum 
+            sample sizes, \\(n_{1}\\), 
+            \\(n_{2}\\),..., \\(n_{L}\\). 
+            Sampling allocation is a procedure for dividing a sample among the strata."
           ),
           box(
-            title = strong("What is the goal of using allocation method?"),
+            title = strong("What is the goal of sampling allocation methods?"),
             status = "primary",
             collapsible = TRUE,
             collapsed = TRUE,
             width = '100%',
-            "The main objective of the allocation method is to",
-            strong("obtain a specific amount of information at the minimum cost")
+            "The main objective of allocation methods is to produce the most 
+            precise estimate at the minimum cost"
           ),
           box(
             title = strong("What are the factors that affect the allocation scheme?"),
@@ -160,24 +163,17 @@ ui <- list(
             collapsible = TRUE,
             collapsed = TRUE,
             width = '100%',
-            "There are 3 factors affecting allocation scheme:",
+            "There are 2 main factors affecting allocation scheme:",
             tags$ol(
-              tags$li(strong("Number of elements"),
-                      tags$br(),
-                      "For example, a sample size of 20 from a population of 200 elements
-                      should contain more information than a sample of 20 from 20,000 elements.",
-                      tags$br(),
-                      "Therefore, large sample sizes should
-          be assigned to strata containing large numbers of elements."),
           tags$li(strong("Variability of observations within 
           each stratum"),
           tags$br(),
-          "The more variability there is, the larger n we 
+          "The more variability there is, the larger \\(n_{i}\\) we 
           need to estimate parameters, with given precision."),
           tags$li(strong("Cost of obtaining an observation
           from each stratum"),
           tags$br(),
-          "The higher cost, the smaller ni will be for 
+          "The higher cost, the smaller \\(n_{i}\\) will be for 
           a given stratum to minimize cost.")
             )
           ),
@@ -204,9 +200,9 @@ ui <- list(
               ),
               tags$tbody(
                 tags$tr(
-                  tags$th("Simple", scope = "row", style = "text-align: center;"),
-                  tags$td("\\(a_{i}\\) are known"),
-                  tags$td("Same \\(n_{i}\\) for each stratum"),
+                  tags$th("Proportional", scope = "row", style = "text-align: center;"),
+                  tags$td("\\(a_{i}\\) = \\(N_{i}\\)/\\(N\\) are known"),
+                  tags$td("\\(n_{i}\\) = \\(a_{i}\\)*\\(n\\) for the \\(i^{th}\\) strata "),
                   align = "center"
                 ),
                 tags$tr(
@@ -218,16 +214,17 @@ ui <- list(
                 ),
                 tags$tr(
                   tags$th("Neyman", scope = "row", style = "text-align: center;" ),
-                  tags$td("\\(c_{i}\\) are", strong("equal or unknown")),
-                  tags$td("Different \\(n_{i}\\) for each stratum"),
+                  tags$td("\\(c_{i}\\) are equal but within-strata variances are different"),
+                  tags$td("Different \\(n_{i}\\) for each stratum providing the 
+                          best precision"),
                   align = "center"
                 ),
                 tags$tr(
                   tags$th("Budget", scope = "row", style = "text-align: center;"),
-                  tags$td("This is a Cost-based allocation",
-                          strong("given a limit budget")),
+                  tags$td("This is a Cost-based allocation
+                          given a limited budget"),
                   tags$td("Different \\(n_{i}\\) for each stratum at the
-                          minimum cost", strong("within limit budget")),
+                          minimum cost within a limited budget"),
                   align = "center"
                 )
               )
@@ -236,10 +233,10 @@ ui <- list(
             p("Where"),
             tags$ul(
               style = "list-style: none;",
-              tags$li("\\(a_{i}\\) denotes the proportion of observation
-                      allocated to each stratum"),
+              tags$li("\\(N_{i}\\) denotes the size of strata \\(i\\) "),
+              tags$li("\\(a_{i}\\) denotes the proportion of the population in each strata"),
               tags$li("\\(c_{i}\\) denotes the cost of obtaining a single
-                      observation from the \\(i\\)th stratum")
+                      observation from the \\(i^{th}\\) stratum")
             )
           )
         ),
@@ -336,9 +333,9 @@ ui <- list(
           tabsetPanel(
             id = "models",
             type = "tabs",
-            ##### Simple case Tab ----------------------------------------------
+            ##### Proportional Tab ----------------------------------------------
             tabPanel(
-              title = "Simple Allocation",
+              title = "Proportional Allocation",
               br(),
               fluidRow(
                 column(

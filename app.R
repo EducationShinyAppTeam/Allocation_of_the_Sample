@@ -10,7 +10,7 @@ library(ggplot2)
 
 # Global Constants ----
 fixedStdDev <- 5
-SimpleCal <- function(B,sigma, N = 600, sizes, sigRatios, allocations, target){
+PropCal <- function(B,sigma, N = 600, sizes, sigRatios, allocations, target){
   sizes <- c(sizes, N-sum(sizes))
   sigmas <- sigma * sigRatios
   allocations <- c(allocations, 1-sum(allocations))
@@ -142,7 +142,7 @@ ui <- list(
             collapsed = TRUE,
             width = '100%',
             "Often a population can be divided into \\(L\\) more homogenous subpopulations
-            called strata. In stratified random sampling with a sample size \\(n\\) 
+            called", em("strata."), "In stratified random sampling with a sample size \\(n\\) 
             , there are many ways to divide \\(n\\) into the individual stratum 
             sample sizes, \\(n_{1}\\), 
             \\(n_{2}\\),..., \\(n_{L}\\). 
@@ -247,14 +247,13 @@ ui <- list(
           p("On this page, you will explore how each type of allocation method works.
             Please follow the steps below by using the sliders to adjust the parameters. 
             Then observe the plots of sample size when using a different type of allocation.
-            As you adjust the sliders, think about how each one affects the sample size"),
+            As you adjust the sliders, think about how each one affects the sample size."),
           p(),
           br(),
           h3("Step 1: Set Initial Values"),
-          p("There are a total of  \\(N\\) = 600 sampling units in the population
-            and there are \\(L\\) = 3 strata.
-            Fix stratum 3's number of sampling unit = 200 and stratum 3's 
-            standard deviation = 5"),
+          p("There is a total of  \\(N\\) = 600 sampling units in the population
+            and there are \\(L\\) = 3 stratas.
+            Fix the stratum 3's standard deviation = 5"),
           fluidRow(
             tags$form(
               class = "form-inline",
@@ -341,31 +340,16 @@ ui <- list(
                 column(
                   width = 4,
                   wellPanel(
-                    h3("Step 3: Add Factors"),
-                    sliderInput(
-                      inputId = "a1",
-                      label = "Fraction of observations allocated to stratum 1,
-                      \\(a_{1}\\) ",
-                      min = 0.1,
-                      max = 0.8,
-                      step = 0.01,
-                      value = 0.33
-                    ),
-                    sliderInput(
-                      inputId = "a2",
-                      label = "Fraction of observations allocated to stratum 2,
-                      \\(a_{2}\\) ",
-                      min = 0.1,
-                      max = 0.8,
-                      step = 0.01,
-                      value = 0.33
-                    )
+                    h3("Step 3: Additional Factors"),
+                    uiOutput("a1Summary"),
+                    uiOutput("a2Summary"),
+                    uiOutput("a3Summary")
                   )
                 ),
                 column(
                   width = 8,
                   offset = 0,
-                  plotOutput("SimplePlot")
+                  plotOutput("PropPlot")
                 )
                 )
               ),
@@ -569,7 +553,7 @@ ui <- list(
           )
         ),
       
-        #### Set up the References Page-REQUIRED ----
+        #### Set up the References Page ----
         tabItem(
           tabName = "references",
           withMathJax(),
@@ -664,6 +648,30 @@ ui <- list(
       })
     }
   )
+  observeEvent(
+    eventExpr = c(input$N1),
+    handlerExpr = {
+      output$a1Summary <- renderUI({
+        paste0("Fraction of observations allocated to stratum 1 = " ,round(input$N1/600, digits= 2))
+      })
+    }
+  )
+  observeEvent(
+    eventExpr = c(input$N1),
+    handlerExpr = {
+      output$a2Summary <- renderUI({
+        paste0("Fraction of observations allocated to stratum 2 = " ,round(input$N2/600, digits= 2))
+      })
+    }
+  )
+  observeEvent(
+    eventExpr = c(input$N1),
+    handlerExpr = {
+      output$a3Summary <- renderUI({
+        paste0("Fraction of observations allocated to stratum 3 = " ,round(1-input$N1/600-input$N2/600, digits= 2))
+      })
+    }
+  )
   
     observeEvent(
     eventExpr = c(input$N1, input$N2, input$r1, input$r2),
@@ -744,7 +752,7 @@ ui <- list(
     )
     
   ### Plots----
-  output$SimplePlot <- renderPlot(
+  output$PropPlot <- renderPlot(
     expr = {
       ggplot(
         data = data.frame(
@@ -753,37 +761,37 @@ ui <- list(
         mapping = aes(x = B)
       ) +
         stat_function(
-          fun = SimpleCal,
+          fun = PropCal,
           args = list(
             sizes = c(input$N1, input$N2),
             sigma = fixedStdDev,
             sigRatios = c(input$r1, input$r2, 1),
-            allocations = c(input$a1, input$a2),
-            target = input$a1
+            allocations = c(input$N1/600, input$N2/600),
+            target = input$N1/600
           ),
           size = 1.2,
           mapping = aes(color = "group1", linetype = "group1")
         )  +
         stat_function(
-          fun = SimpleCal,
+          fun = PropCal,
           args = list(
             sizes = c(input$N1, input$N2),
             sigma = fixedStdDev,
             sigRatios = c(input$r1, input$r2, 1),
-            allocation = c(input$a1,input$a2),
-            target = input$a2
+            allocation = c(input$N1/600, input$N2/600),
+            target = input$N2/600
           ),
           size = 1.2,
           mapping = aes(color = "group2", linetype = "group2")
         ) +
         stat_function(
-          fun = SimpleCal,
+          fun = PropCal,
           args = list(
             sizes = c(input$N1, input$N2),
             sigma = fixedStdDev,
             sigRatios = c(input$r1, input$r2, 1),
-            allocations = c(input$a1,input$a2),
-            target = 1-input$a1-input$a2
+            allocations = c(input$N1/600, input$N2/600),
+            target = 1-input$N1/600-input$N2/600
           ),
           size = 1.2,
           mapping = aes(color = "group3", linetype = "group3")
@@ -799,7 +807,7 @@ ui <- list(
           color = "strata",
           linetype = "strata"
         )+
-        ggtitle("Simple Allocation") +
+        ggtitle("Proportion Allocation") +
         xlab("Bounded error") +
         ylab("Sample size") +
         theme_bw()+
@@ -812,7 +820,7 @@ ui <- list(
           plot.title = element_text(size = 20, hjust = 0.5)
         )
     },
-    alt = "A plot of a set of sample size using simple allocation method"
+    alt = "A plot of a set of sample size using proportional allocation method"
   )
   
   

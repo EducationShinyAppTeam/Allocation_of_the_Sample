@@ -254,6 +254,9 @@ ui <- list(
           p("There is a total of  \\(N\\) = 600 sampling units in the population
             and there are \\(L\\) = 3 stratas.
             Fix the stratum 3's standard deviation = 5"),
+          p("Note that when you are using an extreme number of sampling units in stratrums, 
+            please allow strata 3 to have some sampling units 
+            i.e., each stratum should have 100 sampling units at minimum"),
           fluidRow(
             tags$form(
               class = "form-inline",
@@ -288,6 +291,7 @@ ui <- list(
                uiOutput("N3Summary"),
               )
                 )),
+          br(),
           fluidRow(
             tags$form(
               class = "form-inline",
@@ -478,7 +482,9 @@ ui <- list(
                   plotOutput("BudgetPlot")
                 ),
                 br(),
-                uiOutput("BoundederrorSummary")
+                uiOutput("BoundederrorSummary"),
+                br(),
+                p("Footnote: Rounding may cause some values to be off by 1 in some situation")
               )
             )
           )
@@ -615,7 +621,7 @@ ui <- list(
           type = "error",
           title = "Error: Please check your inputs for N1 and N2" ,
           text = tags$div(
-            p("N1 + N2 must not exceed 500" )
+            p("N1 + N2 must not exceed 500")
           ),
           html = TRUE 
         )
@@ -631,7 +637,7 @@ ui <- list(
           type = "error",
           title = "Error: Please check your inputs for a1 and a2" ,
           text = tags$div(
-            p("a1 + a2 must not exceed 0.99" )
+            p("a1 + a2 must not exceed 0.99")
           ),
           html = TRUE 
         )

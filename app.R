@@ -253,7 +253,7 @@ ui <- list(
           h3("Step 1: Set Initial Values"),
           p("There is a total of  \\(N\\) = 600 sampling units in the population
             and there are \\(L\\) = 3 stratas.
-            Fix the stratum 3's standard deviation = 5"),
+            Fix the stratum 3's standard deviation = 5."),
           p("Note that when you are using an extreme number of sampling units in stratrums, 
             please allow strata 3 to have some sampling units 
             i.e., each stratum should have 100 sampling units at minimum."),

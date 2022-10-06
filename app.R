@@ -75,7 +75,7 @@ ui <- list(
       tags$li(
         class = "dropdown",
         tags$a(href='https://shinyapps.science.psu.edu/',
-               icon("house")))
+               icon("home")))
     ),
     ### Create the sidebar/left navigation menu
     dashboardSidebar(
@@ -101,13 +101,13 @@ ui <- list(
           tabName = "overview",
           withMathJax(),
           h1("Sampling Allocation"),
-          p("This app introduces different methods for the sampling allocation problem"),
+          p("This app introduces different methods for the sampling allocation problem."),
           h2("Instructions"),
           tags$ol(
             tags$li("Click the go button to enter the prerequisites page."),
             tags$li("In the explore section, view and compare the different 
-                    allocation methods"),
-            tags$li("The challenge page provides ideas for exploration")
+                    allocation methods."),
+            tags$li("The challenge page provides ideas for exploration.")
           ),
           ##### Go Button
           div(style = "text-align: center;",
@@ -120,7 +120,7 @@ ui <- list(
           br(),
           br(),
           h2("Acknowledgements"),
-          p("This version of the app was developed and coded by Phichchaya Sutaporn",
+          p("This version of the app was developed and coded by Phichchaya Sutaporn.",
             br(),
             br(),
             "Cite this app as:",
@@ -155,7 +155,7 @@ ui <- list(
             collapsed = TRUE,
             width = '100%',
             "The main objective of allocation methods is to produce the most 
-            precise estimate at the minimum cost"
+            precise estimate at the minimum cost."
           ),
           box(
             title = strong("What are the factors that affect the allocation scheme?"),
@@ -166,12 +166,12 @@ ui <- list(
             "There are 2 main factors affecting allocation scheme:",
             tags$ol(
           tags$li(strong("Variability of observations within 
-          each stratum"),
+          each stratum."),
           tags$br(),
           "The more variability there is, the larger \\(n_{i}\\) we 
           need to estimate parameters, with given precision."),
           tags$li(strong("Cost of obtaining an observation
-          from each stratum"),
+          from each stratum."),
           tags$br(),
           "The higher cost, the smaller \\(n_{i}\\) will be for 
           a given stratum to minimize cost.")
@@ -201,30 +201,30 @@ ui <- list(
               tags$tbody(
                 tags$tr(
                   tags$th("Proportional", scope = "row", style = "text-align: center;"),
-                  tags$td("\\(a_{i}\\) = \\(N_{i}\\)/\\(N\\) are known"),
-                  tags$td("\\(n_{i}\\) = \\(a_{i}\\)*\\(n\\) for the \\(i^{th}\\) strata "),
+                  tags$td("\\(a_{i}\\) = \\(N_{i}\\)/\\(N\\) are known."),
+                  tags$td("\\(n_{i}\\) = \\(a_{i}\\)*\\(n\\) for the \\(i^{th}\\) strata."),
                   align = "center"
                 ),
                 tags$tr(
                   tags$th("Cost-Based", scope = "row", style = "text-align: center;"),
                   tags$td("\\(c_{i}\\) are known"),
                   tags$td("Different \\(n_{i}\\) for each stratum at the minimum
-                          cost"),
+                          cost."),
                   align = "center"
                 ),
                 tags$tr(
                   tags$th("Neyman", scope = "row", style = "text-align: center;" ),
-                  tags$td("\\(c_{i}\\) are equal but within-strata variances are different"),
+                  tags$td("\\(c_{i}\\) are equal but within-strata variances are different."),
                   tags$td("Different \\(n_{i}\\) for each stratum providing the 
-                          best precision"),
+                          best precision."),
                   align = "center"
                 ),
                 tags$tr(
                   tags$th("Budget", scope = "row", style = "text-align: center;"),
                   tags$td("This is a Cost-based allocation
-                          given a limited budget"),
+                          given a limited budget."),
                   tags$td("Different \\(n_{i}\\) for each stratum at the
-                          minimum cost within a limited budget"),
+                          minimum cost within a limited budget."),
                   align = "center"
                 )
               )
@@ -233,10 +233,10 @@ ui <- list(
             p("Where"),
             tags$ul(
               style = "list-style: none;",
-              tags$li("\\(N_{i}\\) denotes the size of strata \\(i\\) "),
-              tags$li("\\(a_{i}\\) denotes the proportion of the population in each strata"),
+              tags$li("\\(N_{i}\\) denotes the size of strata \\(i\\)."),
+              tags$li("\\(a_{i}\\) denotes the proportion of the population in each strata."),
               tags$li("\\(c_{i}\\) denotes the cost of obtaining a single
-                      observation from the \\(i^{th}\\) stratum")
+                      observation from the \\(i^{th}\\) stratum.")
             )
           )
         ),
@@ -256,7 +256,7 @@ ui <- list(
             Fix the stratum 3's standard deviation = 5"),
           p("Note that when you are using an extreme number of sampling units in stratrums, 
             please allow strata 3 to have some sampling units 
-            i.e., each stratum should have 100 sampling units at minimum"),
+            i.e., each stratum should have 100 sampling units at minimum."),
           fluidRow(
             tags$form(
               class = "form-inline",
@@ -469,7 +469,7 @@ ui <- list(
                     # ),
                     sliderInput(
                       inputId = "targetBudget",
-                      label = "Target Budget",
+                      label = "Target Budget ($)",
                       min = 500,
                       max = 1500,
                       value = 800
@@ -484,7 +484,7 @@ ui <- list(
                 br(),
                 uiOutput("BoundederrorSummary"),
                 br(),
-                p("Footnote: Rounding may cause some values to be off by 1 in some situation")
+                p("Footnote: Rounding may cause some values to be off by 1 in some situations.")
               )
             )
           )
@@ -1027,7 +1027,7 @@ ui <- list(
           linetype = "strata"
         )+
         ggtitle("Budget Allocation") +
-        xlab("Budget") +
+        xlab("Budget($)") +
         ylab("Sample size") +
         theme_bw()+
         theme(

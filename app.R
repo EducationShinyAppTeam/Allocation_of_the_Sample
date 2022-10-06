@@ -207,7 +207,7 @@ ui <- list(
                 ),
                 tags$tr(
                   tags$th("Cost-Based", scope = "row", style = "text-align: center;"),
-                  tags$td("\\(c_{i}\\) are known"),
+                  tags$td("\\(c_{i}\\) are known."),
                   tags$td("Different \\(n_{i}\\) for each stratum at the minimum
                           cost."),
                   align = "center"

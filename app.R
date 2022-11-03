@@ -62,15 +62,10 @@ ui <- list(
     dashboardHeader(
       title = "Sampling Allocation",
       titleWidth = 250,
+      tags$li(class = "dropdown", actionLink("info", icon("info"))),
       tags$li(
         class = "dropdown",
-        actionLink("info",
-                   icon("info"))),
-      tags$li(
-        class = "dropdown",
-        tags$a(target = "_blank", icon("comments"),
-               href = "https://pennstate.qualtrics.com/jfe/form/SV_7TLIkFtJEJ7fEPz?appName=Assumptions_of_ANOVA"
-        )
+        boastUtils::surveyLink(name = "Sampling_Allocation")
       ),
       tags$li(
         class = "dropdown",
@@ -252,11 +247,10 @@ ui <- list(
           br(),
           h3("Step 1: Set Initial Values"),
           p("There is a total of  \\(N\\) = 600 sampling units in the population
-            and there are \\(L\\) = 3 stratas.
-            Fix the stratum 3's standard deviation = 5."),
-          p("Note that when you are using an extreme number of sampling units in stratrums, 
-            please allow strata 3 to have some sampling units 
-            i.e., each stratum should have 100 sampling units at minimum."),
+            and there are \\(L\\) = 3 strata.
+            The standard deviation for the third statum is fixed at 5."),
+          p("Note that when you are setting the number of sampling units in the 
+            populations for strata 1 and 2, please allow strata 3 to have at least 100 sampling units."),
           fluidRow(
             tags$form(
               class = "form-inline",
@@ -331,7 +325,7 @@ ui <- list(
           uiOutput("test"),
           uiOutput("initSummary"),
           br(),
-          h3("Step 2: Pick a Allocation Type to Explore"),
+          h3("Step 2: Pick an Allocation Type to Explore"),
           ## Inset Tabs 
           tabsetPanel(
             id = "models",
@@ -370,6 +364,7 @@ ui <- list(
                       inputId = "c1",
                       label = "Cost of obtaining a single observation from the 
                       first stratum, \\(c_{1}\\) ",
+                      pre = "$",
                       min = 10,
                       max = 50,
                       step = 1,
@@ -379,6 +374,7 @@ ui <- list(
                       inputId = "c2",
                       label = "Cost of obtaining a single observation from the 
                       second stratum, \\(c_{2}\\) ",
+                      pre = "$",
                       min = 10,
                       max = 50,
                       step = 1,
@@ -387,7 +383,8 @@ ui <- list(
                     sliderInput(
                       inputId = "c3",
                       label = "Cost of obtaining a single observation from the 
-                      thrid stratum, \\(c_{3}\\)",
+                      third stratum, \\(c_{3}\\)",
+                      pre = "$",
                       min = 10,
                       max = 50,
                       step = 1,
@@ -412,8 +409,8 @@ ui <- list(
                   wellPanel(
                     h3("Step 3: Add Factors"),
                     p("Neyman allocation is the cost-based allocation when
-                      cost of obtaining a single observation from each stratum are 
-                      equal or unknow. Therefore, there is no addition factor to add
+                      costs of obtaining a single observation from each stratum are 
+                      equal. Therefore, there are no addition factors to add
                       in this step.") 
                 )
                 ),
@@ -437,6 +434,7 @@ ui <- list(
                       inputId = "budgetc1",
                       label = "Cost of obtaining a single observation from the 
                       first stratum, \\(c_{1}\\)",
+                      pre = "$",
                       min = 10,
                       max = 50,
                       step = 1,
@@ -446,6 +444,7 @@ ui <- list(
                       inputId = "budgetc2",
                       label = "Cost of obtaining a single observation from the 
                       second stratum, \\(c_{2}\\) ",
+                      pre = "$",
                       min = 10,
                       max = 50,
                       step = 1,
@@ -454,22 +453,17 @@ ui <- list(
                     sliderInput(
                       inputId = "budgetc3",
                       label = "Cost of obtaining a single observation from the 
-                      thrid stratum, \\(c_{3}\\) ",
+                      third stratum, \\(c_{3}\\) ",
+                      pre = "$",
                       min = 10,
                       max = 50,
                       step = 1,
                       value = 20
                     ),
-                    # sliderInput(
-                    #   inputId = "budgetRange",
-                    #   label = "Min and Max Total Budget",
-                    #   min = 500,
-                    #   max = 1500,
-                    #   value = c(600, 800)
-                    # ),
                     sliderInput(
                       inputId = "targetBudget",
-                      label = "Target Budget ($)",
+                      label = "Target Budget",
+                      pre = "$",
                       min = 500,
                       max = 1500,
                       value = 800
@@ -493,9 +487,10 @@ ui <- list(
         tabItem(
           tabName = "challenge",
           h2("Challenge"),
-          p("On this page, you will test your understanding on each type of 
-            allocation method
-            by answering the following questions."),
+          p("To check your understanding of sampling allocation, 
+            try these challenge questions. You may use the explore page to help
+            but try not to look at the answers until you try the questions 
+            on your own."),
           br(),
           box(
             title = strong("What happens when the bounded error approaches 0?"),
@@ -597,7 +592,7 @@ ui <- list(
 )
 
 # Define the server ----
-  server <- function(input, output, session) {
+server <- function(input, output, session) {
   ###Button----
   observeEvent(
     eventExpr = input$go1,
@@ -609,8 +604,18 @@ ui <- list(
       )
     }
   )
-
-  
+    ###info button---
+    observeEvent(
+      eventExpr = input$info,
+      handlerExpr = {
+        sendSweetAlert(
+          session = session,
+          type = "info",
+          title = "Information",
+          text = "Use this software to explore sampling allocation methods."
+        )
+      }
+    )
   ### Error message----
   observeEvent(
     eventExpr = c(input$N1,input$N2) ,
@@ -658,7 +663,7 @@ ui <- list(
     eventExpr = c(input$N1),
     handlerExpr = {
       output$a1Summary <- renderUI({
-        paste0("Fraction of observations allocated to stratum 1 = " ,round(input$N1/600, digits= 2))
+        paste0("Fraction of sample allocated to stratum 1 is " ,round(input$N1/600, digits= 2))
       })
     }
   )
@@ -666,7 +671,7 @@ ui <- list(
     eventExpr = c(input$N1),
     handlerExpr = {
       output$a2Summary <- renderUI({
-        paste0("Fraction of observations allocated to stratum 2 = " ,round(input$N2/600, digits= 2))
+        paste0("Fraction of sample allocated to stratum 2 is " ,round(input$N2/600, digits= 2))
       })
     }
   )
@@ -674,7 +679,7 @@ ui <- list(
     eventExpr = c(input$N1),
     handlerExpr = {
       output$a3Summary <- renderUI({
-        paste0("Fraction of observations allocated to stratum 3 = " ,round(1-input$N1/600-input$N2/600, digits= 2))
+        paste0("Fraction of sample allocated to stratum 3 is " ,round(1-input$N1/600-input$N2/600, digits= 2))
       })
     }
   )
@@ -743,11 +748,11 @@ ui <- list(
         )
         
         output$BoundederrorSummary <- renderUI({
-          paste0("When the costs of obtaining a single observation are $",
+          paste0("The costs of obtaining a single observation are $",
                  input$budgetc1, " for Stratum 1, $", input$budgetc2, " for Stratum 
              2, and $", input$budgetc3, " for Stratum 3, and we have a total
-             budget of $", input$targetBudget, ", then we can have a total sample
-             size of ",floor(totalSampleSize), " where the sample size of strata 1 is ",
+             budget of $", input$targetBudget," (as shown by the black vertical line).", 
+             " In this case, we have a total sample size of ",floor(totalSampleSize), " where the sample size of strata 1 is ",
              floor(sampleSize1),", the sample size of strata 2 is ",
              round(sampleSize2),
              " and the sample size of strata 3 is ",
@@ -760,6 +765,13 @@ ui <- list(
   ### Plots----
   output$PropPlot <- renderPlot(
     expr = {
+      validate(
+        need(
+          input$N1 >= 100 & input$N2 >= 100 & (600 - input$N1 - input$N2) >= 100,
+          message = "Please adjust number of sampling unit in strata 1 and 2.
+          Note: There should be a minimum of 100 sampling units in each stratum"
+        )
+      )
       ggplot(
         data = data.frame(
           B = seq(from = 0, to = 5, by = 0.5)
@@ -776,7 +788,7 @@ ui <- list(
             target = input$N1/600
           ),
           size = 1.2,
-          mapping = aes(color = "group1", linetype = "group1")
+          mapping = aes(color = "group 1", linetype = "group 1")
         )  +
         stat_function(
           fun = PropCal,
@@ -788,9 +800,10 @@ ui <- list(
             target = input$N2/600
           ),
           size = 1.2,
-          mapping = aes(color = "group2", linetype = "group2")
+          mapping = aes(color = "group 2", linetype = "group 2")
         ) +
         stat_function(
+          geom = "point",
           fun = PropCal,
           args = list(
             sizes = c(input$N1, input$N2),
@@ -800,7 +813,7 @@ ui <- list(
             target = 1-input$N1/600-input$N2/600
           ),
           size = 1.2,
-          mapping = aes(color = "group3", linetype = "group3")
+          mapping = aes(color = "group 3")
         )+
         scale_x_continuous(
           limits = c(0, 5),
@@ -813,6 +826,7 @@ ui <- list(
           color = "strata",
           linetype = "strata"
         )+
+        guides(linetype="none")+
         ggtitle("Proportion Allocation") +
         xlab("Bounded error") +
         ylab("Sample size") +
@@ -832,6 +846,13 @@ ui <- list(
   
   output$CostbasedPlot <- renderPlot(
     expr = {
+      validate(
+        need(
+          input$N1 >= 100 & input$N2 >= 100 & (600 - input$N1 - input$N2) >= 100,
+          message = "Please adjust number of sampling unit in strata 1 and 2.
+          Note: There should be a minimum of 100 sampling units in each stratum"
+        )
+      )
       ggplot(
         data = data.frame(
           B = seq(from = 0, to = 5, by = 0.5)
@@ -847,8 +868,8 @@ ui <- list(
             costs = c(input$c1, input$c2, input$c3),
             target = 1
           ),
-          size = 1.2,
-          mapping = aes(color = "group1", linetype = "group1")
+          size = 2,
+          mapping = aes(color = "group 1", linetype = "group 1")
         )  +
         stat_function(
           fun = CostbasedCal,
@@ -859,10 +880,11 @@ ui <- list(
             costs = c(input$c1, input$c2, input$c3),
             target = 2
           ),
-          size = 1.2,
-          mapping = aes(color = "group2", linetype = "group2")
+          size = 2,
+          mapping = aes(color = "group 2", linetype = "group 2")
         )  +
         stat_function(
+          geom = "point",
           fun = CostbasedCal,
           args = list(
             sizes = c(input$N1, input$N2),
@@ -871,8 +893,8 @@ ui <- list(
             costs = c(input$c1, input$c2, input$c3),
             target = 3
           ),
-          size = 1.2,
-          mapping = aes(color = "group3", linetype = "group3")
+          size = 2, 
+          mapping = aes(color = "group 3")
         ) +
         scale_x_continuous(
           limits = c(0, 5),
@@ -886,6 +908,7 @@ ui <- list(
           color = "strata",
           linetype = "strata"
         )+
+        guides(linetype="none")+
         ggtitle("Cost-based Allocation") +
         xlab("Bounded error") +
         ylab("Sample size") +
@@ -904,6 +927,13 @@ ui <- list(
   
   output$NeymanPlot <- renderPlot(
     expr = {
+      validate(
+        need(
+          input$N1 >= 100 & input$N2 >= 100 & (600 - input$N1 - input$N2) >= 100,
+          message = "Please adjust number of sampling unit in strata 1 and 2.
+          Note: There should be a minimum of 100 sampling units in each stratum"
+        )
+      )
       ggplot(
         data = data.frame(
           B = seq(from = 0, to = 5, by = 0.5)
@@ -919,7 +949,7 @@ ui <- list(
             target = 1
           ),
           size = 1.2,
-          mapping = aes(color = "group1", linetype = "group1")
+          mapping = aes(color = "group 1", linetype = "group 1")
         )  +
         stat_function(
           fun = NeymanCal,
@@ -930,9 +960,10 @@ ui <- list(
             target = 2
           ),
           size = 1.2,
-          mapping = aes(color = "group2", linetype = "group2")
+          mapping = aes(color = "group 2", linetype = "group 2")
         )  +
         stat_function(
+          geom = "point",
           fun = NeymanCal,
           args = list(
             sizes = c(input$N1, input$N2),
@@ -941,7 +972,7 @@ ui <- list(
             target = 3
           ),
           size = 1.2,
-          mapping = aes(color = "group3", linetype = "group3")
+          mapping = aes(color = "group 3")
         ) +
         scale_x_continuous(
           limits = c(0, 5),
@@ -955,6 +986,7 @@ ui <- list(
           color = "strata",
           linetype = "strata"
         )+
+        guides(linetype="none")+
         ggtitle("Neyman Allocation") +
         xlab("Bounded error") +
         ylab("Sample size") +
@@ -972,6 +1004,13 @@ ui <- list(
   )
   output$BudgetPlot <- renderPlot(
     expr = {
+      validate(
+        need(
+          input$N1 >= 100 & input$N2 >= 100 & (600 - input$N1 - input$N2) >= 100,
+          message = "Please adjust number of sampling unit in strata 1 and 2.
+          Note: There should be a minimum of 100 sampling units in each stratum"
+        )
+      )
       ggplot(
         data = data.frame(
           x = seq(from = 500, to = input$targetBudget, by = 100)
@@ -988,7 +1027,7 @@ ui <- list(
             target = 1
           ),
           size = 1.2,
-          mapping = aes(color = "group1", linetype = "group1")
+          mapping = aes(color = "group 1", linetype = "group 1")
         )  +
         stat_function(
           fun = budgetCalc,
@@ -1000,9 +1039,10 @@ ui <- list(
             target = 2
           ),
           size = 1.2,
-          mapping = aes(color = "group2", linetype = "group2")
+          mapping = aes(color = "group 2", linetype = "group 2")
         )  +
         stat_function(
+          geom = "point",
           fun = budgetCalc,
           args = list(
             sizes = c(input$N1, input$N2),
@@ -1012,7 +1052,7 @@ ui <- list(
             target = 3
           ),
           size = 1.2,
-          mapping = aes(color = "group3", linetype = "group3")
+          mapping = aes(color = "group 3")
         ) +
         geom_vline(xintercept = input$targetBudget, size=1)+
         scale_x_continuous(
@@ -1026,6 +1066,7 @@ ui <- list(
           color = "strata",
           linetype = "strata"
         )+
+        guides(linetype="none")+
         ggtitle("Budget Allocation") +
         xlab("Budget($)") +
         ylab("Sample size") +

@@ -238,7 +238,7 @@ ui <- list(
         ### Set up an Explore Page ----
         tabItem(
           tabName = "explore",
-          h2("Explore"),
+          h2("Exploring Sampling Allocations"),
           p("On this page, you will explore how each type of allocation method works.
             Please follow the steps below by using the sliders to adjust the parameters. 
             Then observe the plots of sample size when using a different type of allocation.
@@ -250,7 +250,7 @@ ui <- list(
             and there are \\(L\\) = 3 strata.
             The standard deviation for the third statum is fixed at 5."),
           p("Note that when you are setting the number of sampling units in the 
-            populations for strata 1 and 2, please allow strata 3 to have at least 100 sampling units."),
+            populations for strata 1 and 2, please allow stratum 3 to have at least 100 sampling units."),
           fluidRow(
             tags$form(
               class = "form-inline",
@@ -294,7 +294,7 @@ ui <- list(
               offset = 1,
               sliderInput(
                 inputId = "r1",
-                label = "Ratio of strata 1's standard deviation to strata 3's, \\(r_{1}\\)",
+                label = "Ratio of strata 1's standard deviation to stratum 3's, \\(r_{1}\\)",
                 min = 0.5,
                 max = 2,
                 value = 1,
@@ -306,7 +306,7 @@ ui <- list(
               offset = 1,
               sliderInput(
                 inputId = "r2",
-                label = "Ratio of strata 2's standard deviation to strata 3's, \\(r_{2}\\)",
+                label = "Ratio of strata 2's standard deviation to stratum 3's, \\(r_{2}\\)",
                 min = 0.5,
                 max = 2,
                 value = 1,
@@ -316,7 +316,7 @@ ui <- list(
             column(
               width = 3,
               offset = 1,
-              p("Strata 3's standard deviation "),
+              p("Stratum 3's standard deviation "),
               p("standard deviation = 5")
             )
           )
@@ -486,11 +486,11 @@ ui <- list(
         ### Set up Challenge page ----
         tabItem(
           tabName = "challenge",
-          h2("Challenge"),
+          h2("Challenge Questions"),
           p("To check your understanding of sampling allocation, 
-            try these challenge questions. You may use the explore page to help
-            but try not to look at the answers until you try the questions 
-            on your own."),
+            try these challenge questions. You may expand the boxes to see answers.
+            You may use the explore page to help but try not to look at the answers 
+            until you try the questions on your own."),
           br(),
           box(
             title = strong("What happens when the bounded error approaches 0?"),
@@ -612,7 +612,7 @@ server <- function(input, output, session) {
           session = session,
           type = "info",
           title = "Information",
-          text = "Use this software to explore sampling allocation methods."
+          text = "Use this application to explore sampling allocation methods."
         )
       }
     )
@@ -749,13 +749,13 @@ server <- function(input, output, session) {
         
         output$BoundederrorSummary <- renderUI({
           paste0("The costs of obtaining a single observation are $",
-                 input$budgetc1, " for Stratum 1, $", input$budgetc2, " for Stratum 
-             2, and $", input$budgetc3, " for Stratum 3, and we have a total
+                 input$budgetc1, " for stratum 1, $", input$budgetc2, " for stratum 
+             2, and $", input$budgetc3, " for stratum 3, and we have a total
              budget of $", input$targetBudget," (as shown by the black vertical line).", 
-             " In this case, we have a total sample size of ",floor(totalSampleSize), " where the sample size of strata 1 is ",
-             floor(sampleSize1),", the sample size of strata 2 is ",
-             round(sampleSize2),
-             " and the sample size of strata 3 is ",
+             " In this case, we have a total sample size of ",floor(totalSampleSize), 
+             " where the sample size of stratum 1 is ",
+             floor(sampleSize1),", the sample size of stratum 2 is ",
+             round(sampleSize2)," and the sample size of stratum 3 is ",
              ceiling(sampleSize3)," with an error bound of ",round(errorBound, digits=2),
              ".")
         })
@@ -769,7 +769,7 @@ server <- function(input, output, session) {
         need(
           input$N1 >= 100 & input$N2 >= 100 & (600 - input$N1 - input$N2) >= 100,
           message = "Please adjust number of sampling unit in strata 1 and 2.
-          Note: There should be a minimum of 100 sampling units in each stratum"
+          Note: There should be a minimum of 100 sampling units in each stratum."
         )
       )
       ggplot(
@@ -788,7 +788,7 @@ server <- function(input, output, session) {
             target = input$N1/600
           ),
           size = 1.2,
-          mapping = aes(color = "group 1", linetype = "group 1")
+          mapping = aes(color = "Statum 1", linetype = "Stratum 1")
         )  +
         stat_function(
           fun = PropCal,
@@ -800,7 +800,7 @@ server <- function(input, output, session) {
             target = input$N2/600
           ),
           size = 1.2,
-          mapping = aes(color = "group 2", linetype = "group 2")
+          mapping = aes(color = "Stratum 2", linetype = "Stratum 2")
         ) +
         stat_function(
           geom = "point",
@@ -813,7 +813,7 @@ server <- function(input, output, session) {
             target = 1-input$N1/600-input$N2/600
           ),
           size = 1.2,
-          mapping = aes(color = "group 3")
+          mapping = aes(color = "Stratum 3")
         )+
         scale_x_continuous(
           limits = c(0, 5),
@@ -823,8 +823,8 @@ server <- function(input, output, session) {
           limits = c(0, 300),
           expand = c(0, 0)) +
         labs(
-          color = "strata",
-          linetype = "strata"
+          color = "Strata",
+          linetype = "Strata"
         )+
         guides(linetype="none")+
         ggtitle("Proportion Allocation") +
@@ -849,7 +849,7 @@ server <- function(input, output, session) {
       validate(
         need(
           input$N1 >= 100 & input$N2 >= 100 & (600 - input$N1 - input$N2) >= 100,
-          message = "Please adjust number of sampling unit in strata 1 and 2.
+          message = "Please adjust the number of sampling units in strata 1 and 2.
           Note: There should be a minimum of 100 sampling units in each stratum"
         )
       )
@@ -869,7 +869,7 @@ server <- function(input, output, session) {
             target = 1
           ),
           size = 2,
-          mapping = aes(color = "group 1", linetype = "group 1")
+          mapping = aes(color = "Stratum 1", linetype = "Stratum 1")
         )  +
         stat_function(
           fun = CostbasedCal,
@@ -881,7 +881,7 @@ server <- function(input, output, session) {
             target = 2
           ),
           size = 2,
-          mapping = aes(color = "group 2", linetype = "group 2")
+          mapping = aes(color = "Stratum 2", linetype = "Stratum 2")
         )  +
         stat_function(
           geom = "point",
@@ -894,7 +894,7 @@ server <- function(input, output, session) {
             target = 3
           ),
           size = 2, 
-          mapping = aes(color = "group 3")
+          mapping = aes(color = "Stratum 3")
         ) +
         scale_x_continuous(
           limits = c(0, 5),
@@ -905,8 +905,8 @@ server <- function(input, output, session) {
           expand = c(0, 0)
         ) +
         labs(
-          color = "strata",
-          linetype = "strata"
+          color = "Strata",
+          linetype = "Strata"
         )+
         guides(linetype="none")+
         ggtitle("Cost-based Allocation") +
@@ -949,7 +949,7 @@ server <- function(input, output, session) {
             target = 1
           ),
           size = 1.2,
-          mapping = aes(color = "group 1", linetype = "group 1")
+          mapping = aes(color = "Stratum 1", linetype = "Stratum 1")
         )  +
         stat_function(
           fun = NeymanCal,
@@ -960,7 +960,7 @@ server <- function(input, output, session) {
             target = 2
           ),
           size = 1.2,
-          mapping = aes(color = "group 2", linetype = "group 2")
+          mapping = aes(color = "Stratum 2", linetype = "Stratum 2")
         )  +
         stat_function(
           geom = "point",
@@ -972,7 +972,7 @@ server <- function(input, output, session) {
             target = 3
           ),
           size = 1.2,
-          mapping = aes(color = "group 3")
+          mapping = aes(color = "Stratum 3")
         ) +
         scale_x_continuous(
           limits = c(0, 5),
@@ -983,8 +983,8 @@ server <- function(input, output, session) {
           expand = c(0, 0)
         ) +
         labs(
-          color = "strata",
-          linetype = "strata"
+          color = "Strata",
+          linetype = "Strata"
         )+
         guides(linetype="none")+
         ggtitle("Neyman Allocation") +
@@ -1027,7 +1027,7 @@ server <- function(input, output, session) {
             target = 1
           ),
           size = 1.2,
-          mapping = aes(color = "group 1", linetype = "group 1")
+          mapping = aes(color = "Stratum 1", linetype = "Stratum 1")
         )  +
         stat_function(
           fun = budgetCalc,
@@ -1039,7 +1039,7 @@ server <- function(input, output, session) {
             target = 2
           ),
           size = 1.2,
-          mapping = aes(color = "group 2", linetype = "group 2")
+          mapping = aes(color = "Stratum 2", linetype = "Stratum 2")
         )  +
         stat_function(
           geom = "point",
@@ -1052,7 +1052,7 @@ server <- function(input, output, session) {
             target = 3
           ),
           size = 1.2,
-          mapping = aes(color = "group 3")
+          mapping = aes(color = "Stratum 3")
         ) +
         geom_vline(xintercept = input$targetBudget, size=1)+
         scale_x_continuous(
@@ -1063,12 +1063,12 @@ server <- function(input, output, session) {
           limits = c(0, 125),
           expand = c(0, 0)) +
         labs(
-          color = "strata",
-          linetype = "strata"
+          color = "Strata",
+          linetype = "Strata"
         )+
         guides(linetype="none")+
         ggtitle("Budget Allocation") +
-        xlab("Budget($)") +
+        xlab("Budget ($)") +
         ylab("Sample size") +
         theme_bw()+
         theme(

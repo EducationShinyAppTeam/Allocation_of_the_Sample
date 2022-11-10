@@ -294,7 +294,7 @@ ui <- list(
               offset = 1,
               sliderInput(
                 inputId = "r1",
-                label = "Ratio of strata 1's standard deviation to stratum 3's, \\(r_{1}\\)",
+                label = "Ratio of stratum 1's standard deviation to stratum 3's, \\(r_{1}\\)",
                 min = 0.5,
                 max = 2,
                 value = 1,
@@ -306,7 +306,7 @@ ui <- list(
               offset = 1,
               sliderInput(
                 inputId = "r2",
-                label = "Ratio of strata 2's standard deviation to stratum 3's, \\(r_{2}\\)",
+                label = "Ratio of stratum 2's standard deviation to stratum 3's, \\(r_{2}\\)",
                 min = 0.5,
                 max = 2,
                 value = 1,

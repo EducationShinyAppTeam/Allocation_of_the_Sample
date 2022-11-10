@@ -689,13 +689,13 @@ server <- function(input, output, session) {
     handlerExpr = {
       output$initSummary <- renderUI({
         paste0(" We are starting with total population size of 600. ",
-               " We have the number of sampling unit in stratum 1 = ", input$N1,
-               " , the number of sampling unit in stratum 2 = ", input$N2,
-               " and the the number of sampling unit in stratum 3 = ", 
+               " We have the number of sampling unit in stratum 1 is ", input$N1,
+               " , the number of sampling unit in stratum 2 is ", input$N2,
+               " and the the number of sampling unit in stratum 3 is ", 
                600-input$N1-input$N2,".",
                " The third stratum's standard deviation is 5. ", 
                " The first and second stratum's standard deviations are ",
-               5*input$r1," and ", 5*input$r2, " respectively.")
+               5*input$r1," and ", 5*input$r2, ", respectively.")
       })
     }
   )

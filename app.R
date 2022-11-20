@@ -123,7 +123,7 @@ ui <- list(
             boastUtils::citeApp(),
             br(),
             br(),
-            div(class = "updated", "Last Update: 06/13/2022 by Phichchaya Sutaporn.")
+            div(class = "updated", "Last Update: 11/17/2022 by Phichchaya Sutaporn.")
           )
         ),
         #### Set up the Prerequisites Page ----
@@ -787,7 +787,7 @@ server <- function(input, output, session) {
             allocations = c(input$N1/600, input$N2/600),
             target = input$N1/600
           ),
-          size = 1.2,
+          size = 2,
           mapping = aes(color = "Statum 1", linetype = "Stratum 1")
         )  +
         stat_function(
@@ -799,7 +799,7 @@ server <- function(input, output, session) {
             allocation = c(input$N1/600, input$N2/600),
             target = input$N2/600
           ),
-          size = 1.2,
+          size = 2,
           mapping = aes(color = "Stratum 2", linetype = "Stratum 2")
         ) +
         stat_function(
@@ -812,7 +812,7 @@ server <- function(input, output, session) {
             allocations = c(input$N1/600, input$N2/600),
             target = 1-input$N1/600-input$N2/600
           ),
-          size = 1.2,
+          size = 2,
           mapping = aes(color = "Stratum 3")
         )+
         scale_x_continuous(
@@ -826,6 +826,7 @@ server <- function(input, output, session) {
           color = "Strata",
           linetype = "Strata"
         )+
+        scale_color_manual(values = c("#BC204B","#009E73","#1E407C"))+
         guides(linetype="none")+
         ggtitle("Proportion Allocation") +
         xlab("Bounded error") +
@@ -836,6 +837,7 @@ server <- function(input, output, session) {
           axis.text.x = element_text(size = 14),
           axis.text.y = element_text(size = 14),
           legend.title = element_text(size = 15),
+          legend.position = "bottom",
           legend.text = element_text(size = 14),
           plot.title = element_text(size = 20, hjust = 0.5)
         )
@@ -908,6 +910,7 @@ server <- function(input, output, session) {
           color = "Strata",
           linetype = "Strata"
         )+
+        scale_color_manual(values = c("#BC204B","#009E73","#1E407C"))+
         guides(linetype="none")+
         ggtitle("Cost-based Allocation") +
         xlab("Bounded error") +
@@ -917,6 +920,7 @@ server <- function(input, output, session) {
           axis.title = element_text(size = 18),
           axis.text.x = element_text(size = 14),
           axis.text.y = element_text(size = 14),
+          legend.position = "bottom",
           legend.title = element_text(size = 15),
           legend.text = element_text(size = 14),
           plot.title = element_text(size = 20, hjust = 0.5)
@@ -948,7 +952,7 @@ server <- function(input, output, session) {
             sigRatios = c(input$r1, input$r2, 1),
             target = 1
           ),
-          size = 1.2,
+          size = 2,
           mapping = aes(color = "Stratum 1", linetype = "Stratum 1")
         )  +
         stat_function(
@@ -959,7 +963,7 @@ server <- function(input, output, session) {
             sigRatios = c(input$r1, input$r2, 1),
             target = 2
           ),
-          size = 1.2,
+          size = 2,
           mapping = aes(color = "Stratum 2", linetype = "Stratum 2")
         )  +
         stat_function(
@@ -971,7 +975,7 @@ server <- function(input, output, session) {
             sigRatios = c(input$r1, input$r2, 1),
             target = 3
           ),
-          size = 1.2,
+          size = 2,
           mapping = aes(color = "Stratum 3")
         ) +
         scale_x_continuous(
@@ -986,6 +990,7 @@ server <- function(input, output, session) {
           color = "Strata",
           linetype = "Strata"
         )+
+        scale_color_manual(values = c("#BC204B","#009E73","#1E407C"))+
         guides(linetype="none")+
         ggtitle("Neyman Allocation") +
         xlab("Bounded error") +
@@ -995,6 +1000,7 @@ server <- function(input, output, session) {
           axis.title = element_text(size = 18),
           axis.text.x = element_text(size = 14),
           axis.text.y = element_text(size = 14),
+          legend.position = "bottom",
           legend.title = element_text(size = 15),
           legend.text = element_text(size = 14),
           plot.title = element_text(size = 20, hjust = 0.5)
@@ -1026,7 +1032,7 @@ server <- function(input, output, session) {
             costs = c(input$budgetc1, input$budgetc2, input$budgetc3),
             target = 1
           ),
-          size = 1.2,
+          size = 2,
           mapping = aes(color = "Stratum 1", linetype = "Stratum 1")
         )  +
         stat_function(
@@ -1038,7 +1044,7 @@ server <- function(input, output, session) {
             costs = c(input$budgetc1, input$budgetc2, input$budgetc3),
             target = 2
           ),
-          size = 1.2,
+          size = 2,
           mapping = aes(color = "Stratum 2", linetype = "Stratum 2")
         )  +
         stat_function(
@@ -1051,7 +1057,7 @@ server <- function(input, output, session) {
             costs = c(input$budgetc1, input$budgetc2, input$budgetc3),
             target = 3
           ),
-          size = 1.2,
+          size = 2,
           mapping = aes(color = "Stratum 3")
         ) +
         geom_vline(xintercept = input$targetBudget, size=1)+
@@ -1066,6 +1072,7 @@ server <- function(input, output, session) {
           color = "Strata",
           linetype = "Strata"
         )+
+        scale_color_manual(values = c("#BC204B","#009E73","#1E407C"))+
         guides(linetype="none")+
         ggtitle("Budget Allocation") +
         xlab("Budget ($)") +
@@ -1075,6 +1082,8 @@ server <- function(input, output, session) {
           axis.title = element_text(size = 18),
           axis.text.x = element_text(size = 14),
           axis.text.y = element_text(size = 14),
+          legend.key.size = unit(1,"cm"),
+          legend.position = "bottom",
           legend.title = element_text(size = 15),
           legend.text = element_text(size = 14),
           plot.title = element_text(size = 20, hjust = 0.5)

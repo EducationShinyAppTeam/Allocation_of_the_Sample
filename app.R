@@ -788,7 +788,7 @@ server <- function(input, output, session) {
             target = input$N1/600
           ),
           size = 2,
-          mapping = aes(color = "Statum 1", linetype = "Stratum 1")
+          mapping = aes(color = "Stratum 1", linetype = "Stratum 1")
         )  +
         stat_function(
           fun = PropCal,
@@ -803,7 +803,6 @@ server <- function(input, output, session) {
           mapping = aes(color = "Stratum 2", linetype = "Stratum 2")
         ) +
         stat_function(
-          geom = "point",
           fun = PropCal,
           args = list(
             sizes = c(input$N1, input$N2),
@@ -813,7 +812,7 @@ server <- function(input, output, session) {
             target = 1-input$N1/600-input$N2/600
           ),
           size = 2,
-          mapping = aes(color = "Stratum 3")
+          mapping = aes(color = "Stratum 3", linetype = "Stratum 3")
         )+
         scale_x_continuous(
           limits = c(0, 5),
@@ -822,12 +821,14 @@ server <- function(input, output, session) {
         scale_y_continuous(
           limits = c(0, 300),
           expand = c(0, 0)) +
-        labs(
-          color = "Strata",
-          linetype = "Strata"
-        )+
-        scale_color_manual(values = c("#BC204B","#009E73","#1E407C"))+
-        guides(linetype="none")+
+        scale_color_manual(
+          name = "Strata",
+          values = c("#BC204B","#009E73","#1E407C")
+        ) + 
+        scale_linetype_manual(
+          name = "Strata",
+          values = c(1, 2, 3)
+        ) +
         ggtitle("Proportion Allocation") +
         xlab("Bounded error") +
         ylab("Sample size") +
@@ -887,7 +888,6 @@ server <- function(input, output, session) {
           mapping = aes(color = "Stratum 2", linetype = "Stratum 2")
         )  +
         stat_function(
-          geom = "point",
           fun = CostbasedCal,
           args = list(
             sizes = c(input$N1, input$N2),
@@ -897,7 +897,7 @@ server <- function(input, output, session) {
             target = 3
           ),
           size = 2, 
-          mapping = aes(color = "Stratum 3")
+          mapping = aes(color = "Stratum 3", linetype = "Stratum 3")
         ) +
         scale_x_continuous(
           limits = c(0, 5),
@@ -907,12 +907,14 @@ server <- function(input, output, session) {
           limits = c(0, NA),
           expand = c(0, 0)
         ) +
-        labs(
-          color = "Strata",
-          linetype = "Strata"
-        )+
-        scale_color_manual(values = c("#BC204B","#009E73","#1E407C"))+
-        guides(linetype="none")+
+        scale_color_manual(
+          name = "Strata",
+          values = c("#BC204B","#009E73","#1E407C")
+        ) + 
+        scale_linetype_manual(
+          name = "Strata",
+          values = c(1, 2, 3)
+        ) +
         ggtitle("Cost-based Allocation") +
         xlab("Bounded error") +
         ylab("Sample size") +
@@ -969,7 +971,6 @@ server <- function(input, output, session) {
           mapping = aes(color = "Stratum 2", linetype = "Stratum 2")
         )  +
         stat_function(
-          geom = "point",
           fun = NeymanCal,
           args = list(
             sizes = c(input$N1, input$N2),
@@ -978,7 +979,7 @@ server <- function(input, output, session) {
             target = 3
           ),
           size = 2,
-          mapping = aes(color = "Stratum 3")
+          mapping = aes(color = "Stratum 3", linetype = "Stratum 3")
         ) +
         scale_x_continuous(
           limits = c(0, 5),
@@ -988,12 +989,14 @@ server <- function(input, output, session) {
           limits = c(0, NA),
           expand = c(0, 0)
         ) +
-        labs(
-          color = "Strata",
-          linetype = "Strata"
-        )+
-        scale_color_manual(values = c("#BC204B","#009E73","#1E407C"))+
-        guides(linetype="none")+
+        scale_color_manual(
+          name = "Strata",
+          values = c("#BC204B","#009E73","#1E407C")
+        ) + 
+        scale_linetype_manual(
+          name = "Strata",
+          values = c(1, 2, 3)
+        ) +
         ggtitle("Neyman Allocation") +
         xlab("Bounded error") +
         ylab("Sample size") +
@@ -1051,7 +1054,6 @@ server <- function(input, output, session) {
           mapping = aes(color = "Stratum 2", linetype = "Stratum 2")
         )  +
         stat_function(
-          geom = "point",
           fun = budgetCalc,
           args = list(
             sizes = c(input$N1, input$N2),
@@ -1061,7 +1063,7 @@ server <- function(input, output, session) {
             target = 3
           ),
           size = 2,
-          mapping = aes(color = "Stratum 3")
+          mapping = aes(color = "Stratum 3", linetype = "Stratum 3")
         ) +
         geom_vline(xintercept = input$targetBudget, size=1)+
         scale_x_continuous(
@@ -1071,12 +1073,14 @@ server <- function(input, output, session) {
         scale_y_continuous(
           limits = c(0, 125),
           expand = c(0, 0)) +
-        labs(
-          color = "Strata",
-          linetype = "Strata"
-        )+
-        scale_color_manual(values = c("#BC204B","#009E73","#1E407C"))+
-        guides(linetype="none")+
+        scale_color_manual(
+          name = "Strata",
+          values = c("#BC204B","#009E73","#1E407C")
+        ) + 
+        scale_linetype_manual(
+          name = "Strata",
+          values = c(1, 2, 3)
+        ) +
         ggtitle("Budget Allocation") +
         xlab("Budget ($)") +
         ylab("Sample size") +

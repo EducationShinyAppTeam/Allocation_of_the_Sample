@@ -99,23 +99,23 @@ ui <- list(
           p("This app introduces different methods for the sampling allocation problem."),
           h2("Instructions"),
           tags$ol(
-            tags$li("Click the go button to enter the prerequisites page."),
+            tags$li("Click the Prerequisites button to enter the prerequisites page."),
             tags$li("In the explore section, view and compare the different 
                     allocation methods."),
             tags$li("The challenge page provides ideas for exploration.")
           ),
-          ##### Go Button
+          ##### Prerequisites Button
           div(style = "text-align: center;",
               bsButton(
-                inputId = "go1",
-                label = "GO!",
+                inputId = "prerequisites1",
+                label = "Prerequisites",
                 icon = icon("bolt"),
                 size = "large")),
           ##### Create two lines of space
           br(),
           br(),
           h2("Acknowledgements"),
-          p("This version of the app was developed and coded by Phichchaya Sutaporn.",
+          p("This version of the app was developed and coded by Phichchaya Sutaporn, with updates in 2024 by Xin Yun.",
             br(),
             br(),
             "Cite this app as:",
@@ -123,7 +123,7 @@ ui <- list(
             boastUtils::citeApp(),
             br(),
             br(),
-            div(class = "updated", "Last Update: 11/17/2022 by Phichchaya Sutaporn.")
+            div(class = "updated", "Last Update: 07/2/2024 by Xin Yun.")
           )
         ),
         #### Set up the Prerequisites Page ----
@@ -595,12 +595,12 @@ ui <- list(
 server <- function(input, output, session) {
   ###Button----
   observeEvent(
-    eventExpr = input$go1,
+    eventExpr = input$prerequisites1,
     handlerExpr = {
       updateTabItems(
         session = session,
         inputId = "pages",
-        selected = "explore"
+        selected = "prerequisites"
       )
     }
   )

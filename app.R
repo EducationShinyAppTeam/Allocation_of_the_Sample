@@ -85,7 +85,7 @@ ui <- list(
       ),
       tags$div(
         class = "sidebar-logo",
-        boastUtils::psu_eberly_logo("reversed")
+        boastUtils::sidebarFooter()
       )
     ),
     ### Create the content
@@ -489,7 +489,7 @@ ui <- list(
           h2("Challenge Questions"),
           p("To check your understanding of sampling allocation, 
             try these challenge questions. You may expand the boxes to see answers.
-            You may use the explore page to help but try not to look at the answers 
+            You may use the Explore page to help but try not to look at the answers 
             until you try the questions on your own."),
           br(),
           box(

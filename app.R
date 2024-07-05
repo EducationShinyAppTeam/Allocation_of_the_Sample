@@ -123,7 +123,7 @@ ui <- list(
             boastUtils::citeApp(),
             br(),
             br(),
-            div(class = "updated", "Last Update: 07/2/2024 by Xin Yun.")
+            div(class = "updated", "Last Update: 07/5/2024 by Xin Yun.")
           )
         ),
         #### Set up the Prerequisites Page ----
@@ -787,7 +787,7 @@ server <- function(input, output, session) {
             allocations = c(input$N1/600, input$N2/600),
             target = input$N1/600
           ),
-          size = 2,
+          linewidth = 2,
           mapping = aes(color = "Stratum 1", linetype = "Stratum 1")
         )  +
         stat_function(
@@ -872,7 +872,7 @@ server <- function(input, output, session) {
             costs = c(input$c1, input$c2, input$c3),
             target = 1
           ),
-          size = 2,
+          linewidth = 2,
           mapping = aes(color = "Stratum 1", linetype = "Stratum 1")
         )  +
         stat_function(
@@ -956,7 +956,7 @@ server <- function(input, output, session) {
             sigRatios = c(input$r1, input$r2, 1),
             target = 1
           ),
-          size = 2,
+          linewidth = 2,
           mapping = aes(color = "Stratum 1", linetype = "Stratum 1")
         )  +
         stat_function(
@@ -1038,7 +1038,7 @@ server <- function(input, output, session) {
             costs = c(input$budgetc1, input$budgetc2, input$budgetc3),
             target = 1
           ),
-          size = 2,
+          linewidth = 2,
           mapping = aes(color = "Stratum 1", linetype = "Stratum 1")
         )  +
         stat_function(

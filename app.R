@@ -17,7 +17,7 @@ PropCal <- function(B,sigma, N = 600, sizes, sigRatios, allocations, target){
   numerator <- sum(sizes^2 * sigmas^2 / allocations)
   denominator <- (N^2) * (B^2 / 4) + sum(sizes * (sigmas^2))
   n <- numerator / denominator
-  nTarget <- target*n 
+  nTarget <- target*n
   return(nTarget)
 }
 CostbasedCal <- function(B,sigma, N = 600, sizes, sigRatios, costs, target){
@@ -100,7 +100,7 @@ ui <- list(
           h2("Instructions"),
           tags$ol(
             tags$li("Click the Prerequisites button to enter the prerequisites page."),
-            tags$li("In the explore section, view and compare the different 
+            tags$li("In the explore section, view and compare the different
                     allocation methods."),
             tags$li("The challenge page provides ideas for exploration.")
           ),
@@ -137,11 +137,12 @@ ui <- list(
             collapsed = TRUE,
             width = '100%',
             "Often a population can be divided into \\(L\\) more homogenous subpopulations
-            called", em("strata."), "In stratified random sampling with a sample size \\(n\\) 
-            , there are many ways to divide \\(n\\) into the individual stratum 
-            sample sizes, \\(n_{1}\\), 
-            \\(n_{2}\\),..., \\(n_{L}\\). 
-            Sampling allocation is a procedure for dividing a sample among the strata."
+            called", em("strata."), "In stratified random sampling with a sample size \\(n\\)
+            , there are many ways to divide \\(n\\) into the individual stratum
+            sample sizes, \\(n_{1}\\),
+            \\(n_{2}\\),..., \\(n_{L}\\).
+            Sampling allocation methods provide a procedure for dividing a sample
+            among the strata."
           ),
           box(
             title = strong("What is the goal of sampling allocation methods?"),
@@ -149,7 +150,7 @@ ui <- list(
             collapsible = TRUE,
             collapsed = TRUE,
             width = '100%',
-            "The main objective of allocation methods is to produce the most 
+            "The main objective of allocation methods is to produce the most
             precise estimate at the minimum cost."
           ),
           box(
@@ -158,17 +159,17 @@ ui <- list(
             collapsible = TRUE,
             collapsed = TRUE,
             width = '100%',
-            "There are 2 main factors affecting allocation scheme:",
+            "There are 2 main factors affecting the allocation scheme:",
             tags$ol(
-          tags$li(strong("Variability of observations within 
+          tags$li(strong("Variability of observations within
           each stratum."),
           tags$br(),
-          "The more variability there is, the larger \\(n_{i}\\) we 
+          "The more variability there is, the larger \\(n_{i}\\) we
           need to estimate parameters, with given precision."),
           tags$li(strong("Cost of obtaining an observation
           from each stratum."),
           tags$br(),
-          "The higher cost, the smaller \\(n_{i}\\) will be for 
+          "The higher cost, the smaller \\(n_{i}\\) will be for
           a given stratum to minimize cost.")
             )
           ),
@@ -210,7 +211,7 @@ ui <- list(
                 tags$tr(
                   tags$th("Neyman", scope = "row", style = "text-align: center;" ),
                   tags$td("\\(c_{i}\\) are equal but within-strata variances are different."),
-                  tags$td("Different \\(n_{i}\\) for each stratum providing the 
+                  tags$td("Different \\(n_{i}\\) for each stratum providing the
                           best precision."),
                   align = "center"
                 ),
@@ -240,7 +241,7 @@ ui <- list(
           tabName = "explore",
           h2("Exploring Sampling Allocations"),
           p("On this page, you will explore how each type of allocation method works.
-            Please follow the steps below by using the sliders to adjust the parameters. 
+            Please follow the steps below by using the sliders to adjust the parameters.
             Then observe the plots of sample size when using a different type of allocation.
             As you adjust the sliders, think about how each one affects the sample size."),
           p(),
@@ -249,7 +250,7 @@ ui <- list(
           p("There is a total of  \\(N\\) = 600 sampling units in the population
             and there are \\(L\\) = 3 strata.
             The standard deviation for the third statum is fixed at 5."),
-          p("Note that when you are setting the number of sampling units in the 
+          p("Note that when you are setting the number of sampling units in the
             populations for strata 1 and 2, please allow stratum 3 to have at least 100 sampling units."),
           fluidRow(
             tags$form(
@@ -326,7 +327,7 @@ ui <- list(
           uiOutput("initSummary"),
           br(),
           h3("Step 2: Pick an Allocation Type to Explore"),
-          ## Inset Tabs 
+          ## Inset Tabs
           tabsetPanel(
             id = "models",
             type = "tabs",
@@ -362,7 +363,7 @@ ui <- list(
                     h3("Step 3: Add Factors"),
                     sliderInput(
                       inputId = "c1",
-                      label = "Cost of obtaining a single observation from the 
+                      label = "Cost of obtaining a single observation from the
                       first stratum, \\(c_{1}\\) ",
                       pre = "$",
                       min = 10,
@@ -372,7 +373,7 @@ ui <- list(
                     ),
                     sliderInput(
                       inputId = "c2",
-                      label = "Cost of obtaining a single observation from the 
+                      label = "Cost of obtaining a single observation from the
                       second stratum, \\(c_{2}\\) ",
                       pre = "$",
                       min = 10,
@@ -382,7 +383,7 @@ ui <- list(
                     ),
                     sliderInput(
                       inputId = "c3",
-                      label = "Cost of obtaining a single observation from the 
+                      label = "Cost of obtaining a single observation from the
                       third stratum, \\(c_{3}\\)",
                       pre = "$",
                       min = 10,
@@ -409,9 +410,9 @@ ui <- list(
                   wellPanel(
                     h3("Step 3: Add Factors"),
                     p("Neyman allocation is the cost-based allocation when
-                      costs of obtaining a single observation from each stratum are 
+                      costs of obtaining a single observation from each stratum are
                       equal. Therefore, there are no addition factors to add
-                      in this step.") 
+                      in this step.")
                 )
                 ),
                 column(
@@ -432,7 +433,7 @@ ui <- list(
                     h3("Step 3: Add Factors"),
                     sliderInput(
                       inputId = "budgetc1",
-                      label = "Cost of obtaining a single observation from the 
+                      label = "Cost of obtaining a single observation from the
                       first stratum, \\(c_{1}\\)",
                       pre = "$",
                       min = 10,
@@ -442,7 +443,7 @@ ui <- list(
                     ),
                     sliderInput(
                       inputId = "budgetc2",
-                      label = "Cost of obtaining a single observation from the 
+                      label = "Cost of obtaining a single observation from the
                       second stratum, \\(c_{2}\\) ",
                       pre = "$",
                       min = 10,
@@ -452,7 +453,7 @@ ui <- list(
                     ),
                     sliderInput(
                       inputId = "budgetc3",
-                      label = "Cost of obtaining a single observation from the 
+                      label = "Cost of obtaining a single observation from the
                       third stratum, \\(c_{3}\\) ",
                       pre = "$",
                       min = 10,
@@ -487,9 +488,9 @@ ui <- list(
         tabItem(
           tabName = "challenge",
           h2("Challenge Questions"),
-          p("To check your understanding of sampling allocation, 
+          p("To check your understanding of sampling allocation,
             try these challenge questions. You may expand the boxes to see answers.
-            You may use the Explore page to help but try not to look at the answers 
+            You may use the Explore page to help but try not to look at the answers
             until you try the questions on your own."),
           br(),
           box(
@@ -498,7 +499,7 @@ ui <- list(
             collapsible = TRUE,
             collapsed = TRUE,
             width = '100%',
-            "Zero error can only happen with a census (i.e. when sample size = 
+            "Zero error can only happen with a census (i.e. when sample size =
             population size)."
           ),
           box(
@@ -508,30 +509,30 @@ ui <- list(
             collapsible = TRUE,
             collapsed = TRUE,
             width = '100%',
-            "Higher costs result in a smaller allocation going to that group 
+            "Higher costs result in a smaller allocation going to that group
             (essentially proportional to the square root of the cost)."
           ),
           box(
-            title = strong("If the cost of obtaining an observation from one 
-                           stratum is four times the cost for the other strata,  
+            title = strong("If the cost of obtaining an observation from one
+                           stratum is four times the cost for the other strata,
                             how much bigger should the sample size be?"),
             status = "primary",
             collapsible = TRUE,
             collapsed = TRUE,
             width = '100%',
-            "Double the size assuming the standard deviations within strata 
+            "Double the size assuming the standard deviations within strata
             are all the same."
           ),
           box(
-            title = strong("Suppose the cost of obtaining an observation from 
-                           one stratum is four times the cost for the other strata. 
-                           Can you find the within-strata standard deviations 
+            title = strong("Suppose the cost of obtaining an observation from
+                           one stratum is four times the cost for the other strata.
+                           Can you find the within-strata standard deviations
                            that make the optimal allocation the same for all strata?"),
             status = "primary",
             collapsible = TRUE,
             collapsed = TRUE,
             width = '100%',
-            "This type of balance would occur when the standard deviation is 
+            "This type of balance would occur when the standard deviation is
             doubled compared to the other groups (because sample allocation goes with the variance). "
           ),
           box(
@@ -543,17 +544,17 @@ ui <- list(
             "Sample size will be a linear function of the budget for each stratum. "
           ),
           box(
-            title = strong("Suppose costs and within-group standard deviations are 
+            title = strong("Suppose costs and within-group standard deviations are
                            the same for all strata. Should the sample sizes always be the same?"),
             status = "primary",
             collapsible = TRUE,
             collapsed = TRUE,
             width = '100%',
-            "No – population sizes can play a role if a small error forces the 
+            "No – population sizes can play a role if a small error forces the
             use of a large proportion of the population be sampled. "
           )
         ),
-      
+
         #### Set up the References Page ----
         tabItem(
           tabName = "references",
@@ -562,7 +563,7 @@ ui <- list(
           p(class = "hangingindent",
             "Bailey, E. (2015). shinyBS: Twitter bootstrap components for shiny.
             (v0.6.1). [R package]. Available from:
-            https://CRAN.R-project.org/package=shinyBS"), 
+            https://CRAN.R-project.org/package=shinyBS"),
           p(class = "hangingindent",
             "Carey, R. (2019). boastUtils: BOAST Utilities. (v0.1.0).
             [R Package]. Available from
@@ -628,7 +629,7 @@ server <- function(input, output, session) {
           text = tags$div(
             p("N1 + N2 must not exceed 500")
           ),
-          html = TRUE 
+          html = TRUE
         )
       }
     }
@@ -644,13 +645,13 @@ server <- function(input, output, session) {
           text = tags$div(
             p("a1 + a2 must not exceed 0.99")
           ),
-          html = TRUE 
+          html = TRUE
         )
       }
     }
   )
 # Create the summary sentence ----------------
-  
+
   observeEvent(
     eventExpr = c(input$N1, input$N2),
     handlerExpr = {
@@ -683,7 +684,7 @@ server <- function(input, output, session) {
       })
     }
   )
-  
+
     observeEvent(
     eventExpr = c(input$N1, input$N2, input$r1, input$r2),
     handlerExpr = {
@@ -691,15 +692,15 @@ server <- function(input, output, session) {
         paste0(" We are starting with total population size of 600. ",
                " We have the number of sampling unit in stratum 1 is ", input$N1,
                " , the number of sampling unit in stratum 2 is ", input$N2,
-               " and the the number of sampling unit in stratum 3 is ", 
+               " and the the number of sampling unit in stratum 3 is ",
                600-input$N1-input$N2,".",
-               " The third stratum's standard deviation is 5. ", 
+               " The third stratum's standard deviation is 5. ",
                " The first and second stratum's standard deviations are ",
                5*input$r1," and ", 5*input$r2, ", respectively.")
       })
     }
   )
-    
+
     observeEvent(
       eventExpr = c(input$N1, input$N2, input$r1, input$r2,
                     input$budgetc1, input$budgetc2, input$budgetc3,
@@ -717,27 +718,27 @@ server <- function(input, output, session) {
         sampleSize1 <- budgetCalc(
           Budget = input$targetBudget,
           N = 600,
-          sizes = c(input$N1, input$N2), 
-          fixedStdDev, 
-          sigRatios = c(input$r1, input$r2, 1), 
+          sizes = c(input$N1, input$N2),
+          fixedStdDev,
+          sigRatios = c(input$r1, input$r2, 1),
           costs = c(input$budgetc1, input$budgetc2,input$budgetc3),
           target = 1
         )
         sampleSize2 <- budgetCalc(
           Budget = input$targetBudget,
           N = 600,
-          sizes = c(input$N1, input$N2), 
-          fixedStdDev, 
-          sigRatios = c(input$r1, input$r2, 1), 
+          sizes = c(input$N1, input$N2),
+          fixedStdDev,
+          sigRatios = c(input$r1, input$r2, 1),
           costs = c(input$budgetc1, input$budgetc2,input$budgetc3),
           target = 2
         )
         sampleSize3 <- budgetCalc(
           Budget = input$targetBudget,
           N = 600,
-          sizes = c(input$N1, input$N2), 
-          fixedStdDev, 
-          sigRatios = c(input$r1, input$r2, 1), 
+          sizes = c(input$N1, input$N2),
+          fixedStdDev,
+          sigRatios = c(input$r1, input$r2, 1),
           costs = c(input$budgetc1, input$budgetc2,input$budgetc3),
           target = 3
         )
@@ -746,13 +747,13 @@ server <- function(input, output, session) {
           sampleSizes = sampleSizes,
           variances = (fixedStdDev * c(input$r1, input$r2, 1))^2
         )
-        
+
         output$BoundederrorSummary <- renderUI({
           paste0("The costs of obtaining a single observation are $",
-                 input$budgetc1, " for stratum 1, $", input$budgetc2, " for stratum 
+                 input$budgetc1, " for stratum 1, $", input$budgetc2, " for stratum
              2, and $", input$budgetc3, " for stratum 3, and we have a total
-             budget of $", input$targetBudget," (as shown by the black vertical line).", 
-             " In this case, we have a total sample size of ",floor(totalSampleSize), 
+             budget of $", input$targetBudget," (as shown by the black vertical line).",
+             " In this case, we have a total sample size of ",floor(totalSampleSize),
              " where the sample size of stratum 1 is ",
              floor(sampleSize1),", the sample size of stratum 2 is ",
              round(sampleSize2)," and the sample size of stratum 3 is ",
@@ -761,7 +762,7 @@ server <- function(input, output, session) {
         })
       }
     )
-    
+
   ### Plots----
   output$PropPlot <- renderPlot(
     expr = {
@@ -824,7 +825,7 @@ server <- function(input, output, session) {
         scale_color_manual(
           name = "Strata",
           values = c("#BC204B","#009E73","#1E407C")
-        ) + 
+        ) +
         scale_linetype_manual(
           name = "Strata",
           values = c(1, 2, 3)
@@ -846,8 +847,8 @@ server <- function(input, output, session) {
     },
     alt = "A plot of a set of sample size using proportional allocation method"
   )
-  
-  
+
+
   output$CostbasedPlot <- renderPlot(
     expr = {
       validate(
@@ -896,7 +897,7 @@ server <- function(input, output, session) {
             costs = c(input$c1, input$c2, input$c3),
             target = 3
           ),
-          size = 2, 
+          size = 2,
           mapping = aes(color = "Stratum 3", linetype = "Stratum 3")
         ) +
         scale_x_continuous(
@@ -910,7 +911,7 @@ server <- function(input, output, session) {
         scale_color_manual(
           name = "Strata",
           values = c("#BC204B","#009E73","#1E407C")
-        ) + 
+        ) +
         scale_linetype_manual(
           name = "Strata",
           values = c(1, 2, 3)
@@ -932,7 +933,7 @@ server <- function(input, output, session) {
     },
     alt = "A plot of a set of sample size using cost-based allocation method"
   )
-  
+
   output$NeymanPlot <- renderPlot(
     expr = {
       validate(
@@ -992,7 +993,7 @@ server <- function(input, output, session) {
         scale_color_manual(
           name = "Strata",
           values = c("#BC204B","#009E73","#1E407C")
-        ) + 
+        ) +
         scale_linetype_manual(
           name = "Strata",
           values = c(1, 2, 3)
@@ -1076,7 +1077,7 @@ server <- function(input, output, session) {
         scale_color_manual(
           name = "Strata",
           values = c("#BC204B","#009E73","#1E407C")
-        ) + 
+        ) +
         scale_linetype_manual(
           name = "Strata",
           values = c(1, 2, 3)
